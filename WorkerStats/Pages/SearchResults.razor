@@ -18,50 +18,62 @@
         <input type="button" id="backButton" class="btn btn-default" value="Back to worker stats" onclick="history.back()" />
     </form>
     <h3>No Search Results For:</h3>
-    <p>Start Date: @convertedStartDateTime</p>
-    <p>End Date: @convertedEndDateTime</p>
-    <p>User: @uniqueUserToSearch</p>
-    <p>Type: @inWorker</p>
+    <h5>Start Date: @convertedStartDateTime</h5>
+    <h5>End Date: @convertedEndDateTime</h5>
+    <h5>User: @uniqueUserToSearch</h5>
+    <h5>Type: @inWorker</h5>
 }
 else
 {
-    <div class="container-fluid">
-        <form>
-            <input type="button" id="backButton" class="btn btn-default" value="Back to worker stats" onclick="history.back()" />
-        </form>
-        <h3>Search Results For:</h3>
-        <p>Start Date: @convertedStartDateTime</p>
-        <p>End Date: @convertedEndDateTime</p>
-        <p>User: @uniqueUserToSearch</p>
-        <p>Type: @inWorker</p>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered">
-                    <thead>
+<div class="container-fluid">
+    <form>
+        <input type="button" id="backButton" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
+    </form>
+    <h3>Search Results For:</h3>
+    <h5>Start Date: @convertedStartDateTime</h5>
+    <h5>End Date: @convertedEndDateTime</h5>
+    <h5>Employee: @uniqueUserToSearch</h5>
+    <h5>Type: @inWorker</h5>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Avg</th>
+                        <th>Count</th>
+                        <th>Type</th>
+                        <th>Time Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var workerStat in workerStats)
+                    {
                         <tr>
-                            <th>Employee</th>
-                            <th>Avg</th>
-                            <th>Count</th>
-                            <th>Type</th>
-                            <th>Time Spent</th>
+                            <td>@workerStat.Username</td>
+                            <td>@workerStat.AverageSecondsElapsed</td>
+                            <td>@workerStat.Count</td>
+                            <td>@workerStat.InWorker</td>
+                            <td>@workerStat.ConvertedTimeSpent</td>
                         </tr>
-                    </thead>
-                    <tbody>
+                    }
+                    <tr>
+                        <td><b>Totals</b></td>
                         @foreach (var workerStat in workerStats)
                         {
-                            <tr>
-                                <td>@workerStat.Username</td>
-                                <td>@workerStat.AverageSecondsElapsed</td>
-                                <td>@workerStat.Count</td>
-                                <td>@workerStat.InWorker</td>
-                                <td>@workerStat.TimeSpent</td>
-                            </tr>
+                            totalCount += long.Parse(workerStat.Count);
+                            totalTimeSpent += long.Parse(workerStat.TimeSpent);
                         }
-                    </tbody>
-                </table>
-            </div>
+                        <td></td>
+                        <td><b>@totalCount</b></td>
+                        <td></td>
+                        <td><b>@WorkerStatsService.convertSeconds(totalTimeSpent.ToString())</b></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 }
 @code {
     //Parameters for SearchResults razor component
@@ -73,6 +85,11 @@ else
     public string uniqueUserToSearch { get; set; }
     [Parameter]
     public string inWorker { get; set; }
+
+
+    public long totalCount;
+    public long remainingTotalCount;
+    public long totalTimeSpent;
 
     public string convertedStartDateTime;
     public string convertedEndDateTime;

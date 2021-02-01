@@ -29,8 +29,14 @@ h3 {
     color: #fff;
 }
 
+h4 {
+     color: #ff0000;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
 h5 {
-    color: #ff0000;
+    color: #fff;
     font-family: 'Roboto', sans-serif;
     text-align: center;
 }
@@ -68,8 +74,10 @@ img {
 }
 
 .table{
+    border-color: #000000;
     text-align: center;
     background-color: #26b050;
+    color: #fff;
 }
 
 .table th{
@@ -116,6 +124,7 @@ img {
     padding: 10px;
     margin-top: 5px;
     width: 100% !important;
+    text-align: center;
 }
 
     /* Style the input fields */
@@ -127,18 +136,13 @@ img {
 }
 
     .form-inline label {
-        margin-left: 15px;
-        padding: 15px;
+        margin-left: 5px;
+        padding: 5px;
     }
-
-.form-inline-group {
-    margin: 0px;
-}
 
 /* Style the submit button */
 .form-inline button {
     margin-left: 2%;
-    width: 8%;
     padding: 10px;
     background-color: dodgerblue;
     border: 1px solid #ddd;
@@ -185,33 +189,3 @@ img {
     right: 0.75rem;
     top: 0.5rem;
 }
-
-/*@media (max-width: 767.98px) {
-    .main .top-row:not(.auth) {
-        display: none;
-    }
-
-    .main .top-row.auth {
-        justify-content: space-between;
-    }
-
-    .main .top-row a, .main .top-row .btn-link {
-        margin-left: 0;
-    }
-}
-
-@media (min-width: 768px) {
-    app {
-        flex-direction: row;
-    }
-
-    .main .top-row {
-        position: sticky;
-        top: 0;
-    }
-
-    .main > div {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
-    }
-}*/
