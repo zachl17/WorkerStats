@@ -1,0 +1,1390 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AmcLibrary_KLV</name>
+    </assembly>
+    <members>
+        <member name="T:AmcLibrary_KLV.BhFunctions">
+            <summary>
+            BH functions commonly used
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryQueue(System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries current queue for debtor
+            </summary>
+            <param name="inDbtr">Pass in debtor</param>
+            <param name="inCnBH">Pass in bh connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryWorkDate(System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries current work date for debtor
+            </summary>
+            <param name="inDbtr">Pass in debtor</param>
+            <param name="inCnBH">Pass in bh connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryCovidActionRanByDebtor(System.String,System.Nullable{System.DateTime},System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries to see if debtor had covid action ran after date specified.
+            DEFAULTS TO todaysdate-30 days if no date passed in.
+            </summary>
+            <param name="inDbtr">Pass in debtor</param>
+            <param name="inDate">Pass in action date to check. This would be date to check if action ran after specified date. **DEFAULTS TO TODAYSDATE-30DAYS.</param>
+            <param name="inCnBH">Pass in bh connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateQueue(System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Updates queue for debtor in bloodhound
+            </summary>
+            <param name="inDbtr">Pass in debtor to update queue</param>
+            <param name="inNewQueue">Pass in new queue to update to</param>
+            <param name="inChangePerson">Pass in sql person code</param>
+            <param name="inCnBH">Pass in bh connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.DeleteBhRecalls(System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Deletes recall on debtor in bloodhound
+            </summary>
+            <param name="inDbtr">Pass in debtor to delete recall on</param>
+            <param name="inCnBH">Pass in bh connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateWorkDate(System.String,System.DateTime,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Update work date for debtor in bloodhound
+            </summary>
+            <param name="inDbtr">Pass in debtor</param>
+            <param name="inNewWorkDate">Pass in new work date</param>
+            <param name="inChangePerson">Pass in sql person code</param>
+            <param name="inCnBH">Pass in bh conneciton</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryStatus(System.String,System.Data.Odbc.OdbcConnection,System.String@,System.Boolean@)">
+            <summary>
+            Queries current status and if account active.
+            </summary>
+            <param name="inAcct">Pass in account number</param>
+            <param name="inCnBH">Pass in bh connection</param>
+            <param name="inCurrentStatus">Passes back current status</param>
+            <param name="inIsActive">Passes back if account is active. If don't need, set to out _</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateStatus(System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Updates status code in Bloodhound. DO NOT USE UNLESS STATUS CODE DOES NOT DO ANYTHING/IMPORTANT!!
+            </summary>
+            <param name="inAcct">Pass in account#</param>
+            <param name="inNewStatus">Pass in new status code to update to</param>
+            <param name="inChangePerson">Pass in sql person code</param>
+            <param name="inCnBH">Pass in bh connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateDebtorFields(System.String,System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            
+            </summary>
+            <param name="inDbtr"></param>
+            <param name="inUpdateWhat"></param>
+            <param name="inNewValue"></param>
+            <param name="inChangePerson"></param>
+            <param name="inCnBH"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.InsertBhNotes(System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Inserts bloodhound notes for debtor. If note is too long, will parse out note to add mulitple lines.
+            </summary>
+            <param name="inNoteDbtr">Specify debtor#</param>
+            <param name="inNote">Pass in note to insert</param>
+            <param name="inChangePerson">Specify sql change person</param>
+            <param name="inCnBH">BH connection to use</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryBhWindowFields(System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            **Stole parts from Jerrod..thanks JAR! 
+            Queries bloodhound to get window values for specified debtor and window.
+            </summary>
+            <param name="inDebtorOrAccount">Debtor or Account Number</param>
+            <param name="inWindowType">Debtor-"D" Account-"A"</param>
+            <param name="inWindowCode">Specified window code. EX: Updating ADATA:AH, the value here would be "H"</param>
+            <param name="inCnBH">BH connection to use</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.CreateNewWinFields">
+            <summary>
+            Creates window fields to use for updating BH.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateBhWindow(System.String,System.String,System.String,System.String[],System.String,System.Data.Odbc.OdbcConnection,System.Boolean)">
+            <summary>
+            **Stole parts from Jerrod..thanks JAR! 
+            Inserts logging/change history into BH. ADATA:DE1 will be newWinFields[1] 
+            </summary>
+            <param name="inDebtorOrAccount">Debtor or Account Number</param>
+            <param name="inWindowType">Debtor-"D" Account-"A"</param>
+            <param name="inWindowCode">Specified window code. EX: Updating ADATA:AH, the value here would be "H"</param>
+            <param name="inNewWinFields">New values that are being updated. If not being updated, leave NULL</param>
+            <param name="inChangePerson">Person making update for change history</param>
+            <param name="inCnBH">BH connection to use</param>
+            <param name="inOkToContinue">Passes back if ok to continue if there were possible issues</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateDodDate(System.String,System.DateTime,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Update delinquency/dod date
+            </summary>
+            <param name="inAcct">Pass in acct#</param>
+            <param name="inNewDod">Pass in new delinquency date</param>
+            <param name="inChangePerson">Pass in sql change person</param>
+            <param name="inCnBH">Pass in bloodhound connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.UpdateAcmt(System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Update ACMT line. LENGTH HAS TO BE 50 CHARACTERS OR LESS
+            </summary>
+            <param name="inAcct">Pass in acct#</param>
+            <param name="newAcmtStr">Pass in acmt line</param>
+            <param name="inChangePerson">Pass in sql change person</param>
+            <param name="inCnBH">Pass in bloodhound connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.Update_ChangeHistory(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.Odbc.OdbcConnection,System.Boolean)">
+            <summary>
+            Change history for updates to BH. ONLY USE THIS IF YOU ARE UPDATING ADATA:D OR ADATA:A windows.
+            </summary>
+            <param name="inDbtrOrAcct">Debtor or Account Number</param>
+            <param name="inWindowType">Debtor="D" Account-"A"</param>
+            <param name="inLgCode">Specified window code. EX: Updating ADATA:AH, the value here would be "H"</param>
+            <param name="inLgField">What field is being updated. EX: ADATA:AH1, field is "1"</param>
+            <param name="inOldData">Old value in field</param>
+            <param name="inNewData">New value to update field</param>
+            <param name="inChangePerson">Person making update for change history</param>
+            <param name="inCnBH">BH connection to use</param>
+            <param name="inContinueOnError">Set to false if process should stop after error. DEFAULTS TO TRUE to continue on error</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.Update_DebtorChangeHistory(System.String,System.String,System.String,System.String,System.Boolean,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            
+            </summary>
+            <param name="inDbtr"></param>
+            <param name="inLgField"></param>
+            <param name="inOldData"></param>
+            <param name="inNewData"></param>
+            <param name="inIgnoreTrim"></param>
+            <param name="inChangePerson"></param>
+            <param name="inCnBH"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.Update_CredFlagHistory(System.String,System.String,System.String,System.String,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Change history for updates to for amcredflag!
+            </summary>
+            <param name="inAcct"></param>
+            <param name="inOldData"></param>
+            <param name="inNewData"></param>
+            <param name="inChangePerson"></param>
+            <param name="inCnBH"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.ConvertWindowNumToString(System.Int32)">
+            <summary>
+            Converts number to written word for 1-16 for bloodhound.
+            Pass in 1 and will return One.
+            </summary>
+            <param name="inNum">Pass in number to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.GetWinDataJoin(System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Creates windata join
+            </summary>
+            <param name="inJoinToTable">Pass in what table to join windata to. EX:"dbtrmstr"</param>
+            <param name="inJoinToField">Pass in what field to join windata to. EX:"dmdnumber"</param>
+            <param name="inWdType">Pass in window type. EX:"D"</param>
+            <param name="inWdCode">Pass in window code. EX:"E"</param>
+            <param name="inIsLeftJoin">Defaults to true for left join. Set to FALSE if this is not a left join/is inner join</param>
+            <param name="inIsProgressDB">Defaults to true. Set to true if querying from progress db</param>
+            <param name="inIsReportingDB">Defaults to false. Set to true if querying from reporting db</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.BH_Connection(System.String,System.Boolean,System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Bh progress connection string.
+            </summary>
+            <param name="inDb">DB1 or DB5</param>
+            <param name="inCommitted">Updates: set to true(committed). Readonly: set to false(uncommitted)</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.GetSqlString(System.String,System.Boolean,System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Read dsn file and combine as a sql connection string
+            </summary>
+            <param name="inDsnFile">Pass in dsn file to read</param>
+            <param name="inEdd">Set to true if EDD. Defaults to FALSE for reporting database</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryClientCodesByClientGroup(System.String,System.Data.IDbConnection)">
+            <summary>
+            Queries client codes in client group
+            </summary>
+            <param name="inClientGroup">Pass in client group</param>
+            <param name="inCnBH">Pass in bh connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.BhFunctions.QueryClientCodesByAlphaCode(System.String,System.Data.IDbConnection)">
+            <summary>
+            Query client codes by alpha code
+            </summary>
+            <param name="inAlphaCode">Pass in alpha code to query</param>
+            <param name="inCnBH">Pass in bh connection</param>
+            <returns></returns>
+        </member>
+        <member name="T:AmcLibrary_KLV.EmailFunctions">
+            <summary>
+            Functions for email stuff..
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.EmailFunctions.IsValidEmail(System.String)">
+            <summary>
+            Check if an email is valid.
+            If true, will return true. If false, returns false.
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.EmailFunctions.Email_Auto(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Emailer for sending emails.
+            If multiple emails fro TO, CC, or BCC, split by delimiter. EX: kangv@americollect.com;test@americollect.com
+            </summary>
+            <param name="inFrom">From email will default to macro@americollect.com if no email provided.</param>
+            <param name="inTo">Who to send email to</param>
+            <param name="inCC">If anyone should be copied</param>
+            <param name="inBcc">If anyone should be blind copied</param>
+            <param name="inEmlDelimBy">If multiple emails for to, cc, bcc, specify a delimiter from to email</param>
+            <param name="inSubject">Subject of email</param>
+            <param name="inBody">Body of email</param>
+            <param name="inIsAttachment">Set to true if sending attatchment in email</param>
+            <param name="inAttachmentFolder">Folder where attachment is saved. Leave blank if not sending attachment</param>
+            <param name="inAttachmentFile">File name for attachment. Leave blank if not sending attachment</param>
+            <param name="inSendExternal">DEFAULTS TO SET TO FALSE. Set to TRUE if sending to client/externally, this will take generated process email out. Set to FALSE if interal program, keep generated process name in email.</param>       
+            <param name="inEmailHighPriority">DEFAULTS TO FALSE. Set to true if high priority email</param>
+            <param name="inExternalAndEncrypt">DEFAULTS TO FALSE. Set to TRUE if sending to client/externally and we need to encrypt.</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.EmailFunctions.Email_Auto_WithDatatable(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.DataTable,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Emails to specified email address with data in datatable 
+            </summary>
+            <param name="inFrom">From email will default to macro@americollect.com if no email provided.</param>
+            <param name="inTo">Who to send email to</param>
+            <param name="inCC">If anyone should be copied</param>
+            <param name="inBcc">If anyone should be blind copied</param>
+            <param name="inEmlDelimBy">If multiple emails for to, cc, bcc, specify a delimiter from to email</param>
+            <param name="inSubject">Subject of email</param>
+            <param name="inBody">Body of email</param>
+            <param name="inDt">Specify the datatable to use to send data in email</param>
+            <param name="inSendExternal">DEFAULTS TO SET TO FALSE. Set to TRUE if sending to client/externally, this will take generated process email out. Set to FALSE if interal program, keep generated process name in email.</param>
+            <param name="inEmailHighPriority">DEFAULTS TO FALSE. Set to true if high priority email</param>
+            <param name="inExternalAndEncrypt">DEFAULTS TO FALSE. Set to TRUE if sending to client/externally and we need to encrypt.</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.EmailFunctions.Email_Display(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            If wanting to display email in Outlook, use this one!!
+            FROM email will default to current user's outlook.
+            </summary>
+            <param name="inToEmail">Who to send email to</param>
+            <param name="inCcEmail">If anyone should be copied</param>
+            <param name="inBcc">If anyone should be blind copied</param>
+            <param name="inSubject">Subject of email</param>
+            <param name="inBody">Body of email</param>
+            <param name="inAttachmentFolder">Folder where attachment is saved. Leave blank if not sending attachment</param>
+            <param name="inAttachmentFile">File name for attachment. Leave blank if not sending attachment</param>
+            <param name="inSendExternal">DEFAULTS TO SET TO FALSE. Set to TRUE if sending to client/externally, this will take generated process email out. Set to FALSE if interal program, keep generated process name in email.</param>       
+            <param name="inExternalAndEncrypt">DEFAULTS TO FALSE. Set to TRUE if sending to client/externally and we need to encrypt.</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.EmailFunctions.getHTML(System.Data.DataTable)">
+            <summary>
+            This is used to display a datatable in outlook in a email.
+            </summary>
+            <param name="dt">Specify datatable to send in email</param>
+            <returns></returns>
+        </member>
+        <member name="T:AmcLibrary_KLV.ExcelFunctions">
+            <summary>
+            Functions for excel stuff..
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.GetExcelColumnLetter(System.Int32)">
+            <summary>
+            Will return column letter for specified column number.
+            </summary>
+            <param name="columnNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.ExcelColumnNameToNumber(System.String)">
+            <summary>
+            Will return column number for column name specified.
+            </summary>
+            <param name="columnName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.ConvertToRecordset(System.Data.DataTable)">
+            <summary>
+            Converts a datatable to a recordset.
+            </summary>
+            <param name="inTable">Datatable to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.TranslateType(System.Type)">
+            <summary>
+            Adds data type stuff for record sets using adodb.
+            </summary>
+            <param name="columnType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.ExportReport(System.Data.DataTable,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Collections.Generic.List{System.String},System.Boolean,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Exports a report to excel.
+            </summary>
+            <param name="inDT">Datatable to export</param>
+            <param name="inSheetName">Name of sheet</param>
+            <param name="inSaveFolder">Folder to save to</param>
+            <param name="inSaveFileName">File name to save. DO NOT ADD EXTENSION ON FILENAME.</param>
+            <param name="inExtXLSX">Set to true if we should save as .xlsx. Saves as xlsx on DEFAULT, so set to false if not needed as xlsx</param>
+            <param name="inExtXLS">Set to true if we should save as .xls. Defaults to false</param>
+            <param name="CurrencyHdrsList">Pass in a list of headers that should be formatted as currency</param>
+            <param name="inNeedsPwd">Set to true if we need a password. Defaults to FALSE</param>
+            <param name="inPwd">Pass in password to use, else defaults to pobox1566</param>
+            <param name="PercentHdrsList">Pass in a list of headers that should be formatted as percent. These should be a decimal type in the datatable</param>
+            <param name="NumbersHdrsList">Pass in a list of headers that should be formatted as percent. These should be a number,currency type in the datatable</param>
+            <param name="inExportIfNoData">Set to true if we want to export datatable to excel even if no data in table, else defaults to false</param>
+            <param name="inFreezeTopRow">Set to true if we want to freeze top row of excel sheet</param>
+            <param name="inNegativeDecimalsShowRed">Set to true if decimal columns should show up in red for negatives. DEFAULTS TO FALSE</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.ExportMultipleReports(System.Collections.Generic.Dictionary{System.String,System.Data.DataTable},System.String,System.String,System.Boolean,System.Boolean,System.Collections.Generic.List{System.String},System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Export multiple reports in same workbook
+            </summary>
+            <param name="DictDts">Dictionary needs to be passed in with the KEY as the SHEETNAME and the VALUE as the datatable</param>
+            <param name="inSaveFolder">Folder to save to</param>
+            <param name="inSaveFileName">File name to save. DO NOT ADD EXTENSION ON FILENAME.</param>
+            <param name="inExtXLSX">Set to true if we should save as .xlsx. Saves as xlsx on DEFAULT, so set to false if not needed as xlsx</param>
+            <param name="inExtXLS">Set to true if we should save as .xls. Defaults to false</param>
+            <param name="CurrencyHdrsList">Pass in a list of headers that should be formatted as dates</param>
+            <param name="inNeedsPwd">Set to true if we need a password. Defaults to FALSE</param>
+            <param name="inPwd">Pass in password to use, else defaults to pobox1566</param>
+            <param name="inExportIfNoData">Set to true if we want to export datatable to excel even if no data in table, else defaults to false</param>
+            <param name="inFreezeTopRow">Set to true if we want to freeze top row of excel sheet</param>
+            <param name="inNegativeDecimalsShowRed">Set to true if decimal columns should show up in red for negatives. DEFAULTS TO FALSE</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.ExcelFunctions.AddSheetToExcel(System.Data.DataTable,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Collections.Generic.List{System.String},System.Boolean,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Exports a report to excel.
+            </summary>
+            <param name="inDT">Datatable to export. Set to null if not needed</param>
+            <param name="inSheetName">Name of sheet</param>
+            <param name="inSaveFolder">Folder to save to</param>
+            <param name="inSaveFileName">File name to save. DO NOT ADD EXTENSION ON FILENAME.</param>
+            <param name="inExtXLSX">Set to true if we should save as .xlsx. Saves as xlsx on DEFAULT, so set to false if not needed as xlsx</param>
+            <param name="inExtXLS">Set to true if we should save as .xls. Defaults to false</param>
+            <param name="CurrencyHdrsList">Pass in a list of headers that should be formatted as currency</param>
+            <param name="inHasPwd">Set to true if we need a password. Defaults to FALSE</param>
+            <param name="inPwd">Pass in password to use, else defaults to pobox1566</param>
+            <param name="PercentHdrsList">Pass in a list of headers that should be formatted as percent. These should be a decimal type in the datatable</param>
+            <param name="NumbersHdrsList">Pass in a list of headers that should be formatted as percent. These should be a number,currency type in the datatable</param>
+            <param name="inExportIfNoData">Set to true if we want to export datatable to excel even if no data in table, else defaults to false</param>
+            <param name="inFreezeTopRow">Set to true if we want to freeze top row of excel sheet</param>
+            <param name="inNegativeDecimalsShowRed">Set to true if decimal columns should show up in red for negatives. DEFAULTS TO FALSE</param>
+            <param name="inBoldFirstRow">Set to true if we want to bold first row. Defaults to true, set to false if not needeed</param>
+        </member>
+        <member name="T:AmcLibrary_KLV.FileFunctions">
+            <summary>
+            Functions for file stuff...
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.MakeDir(System.String)">
+            <summary>
+            Will make folder directory if doesn't exist.
+            </summary>
+            <param name="inFolderLoc">Folder location to create</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.RenameFileExtension(System.String,System.String)">
+            <summary>
+            Rename extension of filename.
+            </summary>
+            <param name="inFileFolderPath">Specify complete folder and filepath</param>
+            <param name="inNewExt">Specify what extension to change file to. EX: CSV</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.PullFilesFromLocation(System.String,System.String,System.String,System.IO.FileInfo[]@)">
+            <summary>
+            Pulls all files in a folder location.
+            </summary>
+            <param name="inFolderPath">Pass in folder path to pull files from</param>
+            <param name="inFileStr">Pass in if there's a string in file to look for</param>
+            <param name="inFileExt">Pass in file extension. This can be left blank</param>
+            <param name="inTempFiles">Pass in file info list to store files</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.PullFilesToRead(System.String,System.Boolean,System.String,System.String,System.Nullable{System.Char},System.Boolean,System.Collections.Generic.List{System.String},System.IO.FileInfo[]@,System.Data.DataTable@,System.Collections.Generic.List{System.String}@,System.Collections.Generic.List{System.String}@,System.Collections.Generic.Dictionary{System.String,System.String}@,System.String,System.Boolean)">
+            <summary>
+            Pass in criteria for pulling and reading files.
+            This can read excel or reg text files.
+            </summary>
+            <param name="inFolderPath">Pass in folder path to pull files from</param>
+            <param name="isMultiFiles">Set to true if reading in multiple files, false if only 1 file</param>
+            <param name="inFileStr">Pass in if there's a string in file to look for</param>
+            <param name="inFileExt">Pass in file extension. This can be left blank</param>
+            <param name="inFileDelimStrBy">Pass in how to delimit file. If no delimter, set to null</param>
+            <param name="inHasHeaders">Set to true if data contains headers</param>
+            <param name="inDataHeadersList">Pass in if list of headers provided for parsing file</param>
+            <param name="inTempFiles">Pass in file info list to store files</param>
+            <param name="inDataDT">Pass in datatable to store data to</param>
+            <param name="inFoundHdrs">Return headers from file</param>
+            <param name="inBadRowsList">Return any rows in file that were ignored. THIS ONLY WORKS FOR TEXT FILES</param>
+            <param name="inExcelSheetName">Pass in sheet name to read for excel. THIS ONLY WORKS FOR EXCEL FILES</param>
+            <param name="inDictFiles">Returns files read</param>
+            <param name="inIncludeFileName">Set to true if want filename column in datatable for files read</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.ReadExcelFiles(System.String,System.String,System.Boolean,System.Data.DataTable@,System.Collections.Generic.List{System.String}@,System.Boolean,System.Collections.Generic.List{System.String},System.Int32,System.Boolean)">
+            <summary>
+            Reads excel files with exceldatareader.
+            </summary>
+            <param name="inFilePath">Pass in folder to pull files from</param>
+            <param name="inSheetName">Pass in sheet name. If no sheet name and ONLY 1 sheet in excel workbook, leave this blank</param>
+            <param name="inHasHeaders">Set to true if file contains headers. Set to false if no headers.</param>
+            <param name="inDataDT">Pass in datatable to store data to</param>
+            <param name="inFoundHdrs">Will pass back headers found in data</param>
+            <param name="inIncludeFileName">Set to true if want filename column in datatable for files read</param>
+            <param name="inDataHdrsList">Pass in headers list if known, else set to null or ignore</param>
+            <param name="inDataHdrCountCheck">Pass in minimum header column count. Defaults to 0. 0 means first row would be header. If 2 passed in, we need to look at row to see if more than 2 cells have data, if so that is header row. If less, then not header row, junk data or unknown data not needed.</param>
+            <param name="inRemoveBlankExcelColumns">Defaults to false. Pass in if blank columns with no column name should be removed. Only will remove if file HAS headers</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.ReadOldTextFiles(System.String,System.Nullable{System.Char},System.Boolean,System.Collections.Generic.List{System.String},System.Data.DataTable@,System.Collections.Generic.List{System.String}@,System.Collections.Generic.List{System.String}@,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="inFilePath">Pass in folder to pull files from</param>
+            <param name="inFileDelimStrBy">Pass in how to delimit file. If no delimter, set to null</param>
+            <param name="inHasHeaders">Set to true if file contains headers. Set to false if no headers.</param>
+            <param name="inDataHeadersList">If no headers in file, but we have list of headers, pass in list so we can add headers</param>
+            <param name="inDataDT">Pass in datatable to store data to</param>
+            <param name="inFoundHdrs">Will pass back headers found in data</param>
+            <param name="inBadRowsList">Return any rows that were ignored while reading file. THIS IS ONLY FOR TEXT FILES</param>
+            <param name="inIncludeFileName">Set to TRUE if want to add filename column in datatable for files read</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.ReadTextFiles(System.String,System.Nullable{System.Char},System.Boolean,System.Collections.Generic.List{System.String},System.Data.DataTable@,System.Collections.Generic.List{System.String}@,System.Collections.Generic.List{System.String}@,System.Boolean,System.Boolean,System.String)">
+            <summary>
+            Reads text files and stores to datatable
+            </summary>
+            <param name="inFilePath">Pass in folder to pull files from</param>
+            <param name="inFileDelimStrBy">Pass in how to delimit file. If no delimter, set to null</param>
+            <param name="inHasHeaders">Set to true if file contains headers. Set to false if no headers.</param>
+            <param name="inDataHeadersList">If no headers in file, but we have list of headers, pass in list so we can add headers</param>
+            <param name="inDataDT">Pass in datatable to store data to</param>
+            <param name="inFoundHdrs">Will pass back headers found in data</param>
+            <param name="inBadRowsList">Return any rows that were ignored while reading file. THIS IS ONLY FOR TEXT FILES</param>
+            <param name="inIncludeFileName">Set to TRUE if want to add filename column in datatable for files read</param>
+            <param name="inIgnoreHeaderCount">Pass in true if we are ignoring header count</param>
+            <param name="inLineStartsWith">Pass in if multiple records, what row starts with</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.CheckFileHeaders(System.Collections.Generic.List{System.String},System.Data.DataTable,System.Collections.Generic.List{System.String},System.Data.DataTable)">
+            <summary>
+            Check if headers match from expected and found headers.
+            </summary>
+            <param name="inFoundDataHdrsList">Pass in found headers list</param>
+            <param name="inFoundDt">Pass in found dt if dont have headers.</param>
+            <param name="inExpDataColumnNamesList">Pass in expected headers if have them</param>
+            <param name="inExpDt">Pass in expected datatable if dont have headers.</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.MoveFilesToFolder(System.IO.FileInfo[],System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Moves files from file directory folder passed in.
+            </summary>
+            <param name="inFilesToMove">Pass in files to move</param>
+            <param name="inNewFolderLoc">Pass in what folder to move files to</param>
+            <param name="inAddDateTimeStamp">If no date/time added to file, set to false. SETS TO TRUE ON DEFAULT.</param>
+            <param name="inDateAndTimestamp">If want date and time added to beginning of file, set to true. SET TO TRUE ON DEFAULT.</param>
+            <param name="inDateStamp">If only want date added to beginning of file, set to true</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.ExtractFolder(System.String,System.String)">
+            <summary>
+            Extract specified folder.
+            </summary>
+            <param name="inZipPath">Specify path and file name/folder to unzip</param>
+            <param name="inExtractPath">Specify where to extract folder to</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.CreateZipFolder(System.String,System.String)">
+            <summary>
+            Creates zip folder for files in a specified folder.
+            INZIPTOPATH -- zip folder cannot be zipped/saved to same folder as folder with files to zip, must be saving to a different folder and not within same current folder. Doing so will create an error. DO NOT DO IT. ASK KANG IF YOU ARE CONFUSED...
+            </summary>
+            <param name="inZipFromFolder">Specify folder to zip files from EX: "\\AMC-FS1\pubshares\public\Instructions\Visual_Studio\Kang\C Sharp\TestFiles\"</param>
+            <param name="inZipToPath">Specify where to save zip folder and files. MUST BE ENTIRE PATH/FILENAME. EX: "\\AMC-FS1\pubshares\public\Instructions\Visual_Studio\Kang\C Sharp\TestTo\test.zip"</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.ReadXmlFile(System.String)">
+            <summary>
+            Read xml files into a dataset
+            </summary>
+            <param name="inFile">Pass in xml file as string. Pass FULL FILENAME PATH</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.FileFunctions.ConvertDtColumnType(System.Data.DataTable,System.String,System.Type,System.Data.DataTable@)">
+            <summary>
+            Reformat datatable column data type. Only single column at a time.
+            </summary>
+            <param name="inInputDT">Pass in datatable</param>
+            <param name="inDtColumnName">Pass in column name to update datatype</param>
+            <param name="newType">Pass in new datatype. Should be "typeof(decimal)"</param>
+        </member>
+        <member name="T:AmcLibrary_KLV.FtpFunctions">
+            <summary>
+            functions for ftp stuff..
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.FtpFunctions.GetFilesOnFtp(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.String)">
+            <summary>
+            Gets files on specified ftp.
+            </summary>
+            <param name="inFtpHostName">Host name</param>
+            <param name="inFtpUserName">Username to login to ftp</param>
+            <param name="inFtpPassword">Password to use</param>
+            <param name="inFtpFingerprint">Fingerprint key to use</param>
+            <param name="inFtpFolderLoc">Folder where files are on ftp</param>
+            <param name="inFtpFileStr">File string to look for</param>
+            <param name="inSaveToPath">Folder location where to save files to</param>
+            <param name="inDeleteFileAfter">If deleting files on ftp after downloading files, set to true. Else, set to false.</param>
+            <param name="inSendFtpEmail">Set to true if want email to send after files transferred successfully</param>
+            <param name="inSendEmailTo">Email to send successful email to.</param>
+            <param name="inEmlDelimBy">If multiple emails for to, specify a delimiter for to email. EX: kangv@americollect.com;test@americollect.com</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FtpFunctions.PutFilesOnFtp(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.Boolean,System.String,System.String,System.Boolean)">
+            <summary>
+            Put files on specified ftp.
+            If moving multiple files, you will need to loop through this.
+            </summary>
+            <param name="inFtpHostName">Host name</param>
+            <param name="inFtpUserName">Username to login to ftp</param>
+            <param name="inFtpPassword">Password to use</param>
+            <param name="inFtpFingerprint">Fingerprint key to use</param>
+            <param name="inFtpFolderLoc">Folder where files will go on ftp</param>
+            <param name="inFileFolderPath">Folder where current files are that need to go on ftp</param>
+            <param name="inFileToTransfer">Filename to transfer to ftp</param>
+            <param name="inMoveFiles">Set to true if we need to move files to another folder after transfer</param>
+            <param name="inMoveFileFolderPath">Folder to move files to if we need to move files after transfer</param>
+            <param name="inSendFtpEmail">Set to true if want email to send after files transferred successfully</param>
+            <param name="inSendEmailTo">Email to send successful email to.</param>
+            <param name="inEmlDelimBy">If multiple emails for to, specify a delimiter for to email. EX: kangv@americollect.com;test@americollect.com</param>
+            <param name="inTurnOffFtpSupport">If we need to turn off support, set to true. Otherwise, it will default to false. This avoids creating temp files that end with .fiepart</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FtpFunctions.EmailCheckOnFtp(System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Email if files transferred to ftp successfully.
+            </summary>
+            <param name="inIsFtpComp">If true, files downloaded successfully. If false, did not download.</param>
+            <param name="inProcessName">Name of process</param>        
+            <param name="inTo">Who to send email to. If multiple emails, split by delimiter. EX: kangv@americollect.com;test@americollect.com</param>
+            <param name="inEmlDelimBy">If multiple emails, specify a delimiter from to email</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.FtpFunctions.EmailCheckFromFtp(System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Email that files were downloaded successfully.        
+            </summary>
+            <param name="inIsFtpComp">If true, files downloaded successfully. If false, did not download.</param>
+            <param name="inProcessName">Name of process</param>
+            <param name="inTo">Who to send email to. If multiple emails, split by delimiter. EX: kangv@americollect.com;test@americollect.com</param>
+            <param name="inEmlDelimBy">If multiple emails, specify a delimiter from to email</param>
+        </member>
+        <member name="T:AmcLibrary_KLV.GenFunctions">
+            <summary>
+            functions for general stuff...commonly used.
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.TestModeCheck(System.Boolean)">
+            <summary>
+            Will update based on if in test mode or not.
+            </summary>
+            <param name="inTestMode">If test mode, set to true. If not in test mode, set to false</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ConsoleCheck">
+            <summary>
+            Will check if current process is a console application or not. If console application, will return true, else false.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.WriteProcessRun">
+            <summary>
+            If console app, will say what process is running.
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetProjectName">
+            <summary>
+            Gets project name
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetCurUser">
+            <summary>
+            Gets current user running process. This is windows username.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetAdUser(System.String,System.String,System.String)">
+            <summary>
+            Gets fields from active directory based on specified criteria.
+            EX: This will get you email. GetAdUser("samaccountname", Environment.UserName.ToUpper(), "mail")
+            </summary>
+            <param name="inSearchField">Active directory field used to find user in active directory</param>
+            <param name="inSearchString">Value used to find active directory field</param>
+            <param name="inReturnField">What active directory field to return</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetAdEmail">
+            <summary>
+            Gets current user's email address
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.NumbersOnly(System.String)">
+            <summary>
+            Will only keep numbers in a given string.
+            </summary>
+            <param name="inStr">String to remove characters</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.AlphaOnly(System.String)">
+            <summary>
+            Will only keep alpha characters in a given string.
+            </summary>
+            <param name="inStr">String to remove chracters</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.MakeDir(System.String)">
+            <summary>
+            Will make folder directory if doesn't exist.
+            </summary>
+            <param name="inFolderLoc">Folder location to create</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemoveLeadingZeroes(System.String)">
+            <summary>
+            Removes leading zeros from a given string.
+            </summary>
+            <param name="inStr">Pass in string to remove leading zeroes from</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemoveLeadingCharacter(System.String,System.Char)">
+            <summary>
+            Remove leading characters from a given string specified.
+            </summary>
+            <param name="inStr">String to remove characters from</param>
+            <param name="inToRemove">What character to remove</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemoveTrailingCharacter(System.String,System.Char)">
+            <summary>
+            Remove trailing characters from a given string specified.
+            </summary>
+            <param name="inStr">String to remove characters from</param>
+            <param name="inToRemove">What character to remove</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemoveExtraSpaces(System.String)">
+            <summary>
+            Removes extra spaces in a string.
+            </summary>
+            <param name="inStr">String to remove extra spaces from</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.PadLeftOfStr(System.String,System.Int32,System.String)">
+            <summary>
+            This will pad a character to the left of a string based on length given.
+            </summary>
+            <param name="inStr"></param>
+            <param name="inTotalLength">Total length of string allowed</param>
+            <param name="inPadWith">What character to pad to string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.PadRightOfStr(System.String,System.Int32,System.String)">
+            <summary>
+            This will pad a charcter to the right of a string based on length given.
+            </summary>
+            <param name="inStr"></param>
+            <param name="inTotalLength">Total length of string allowed</param>
+            <param name="inPadWith">what chracter to pad to string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ConvertBalance(System.String)">
+            <summary>
+            Converts an EPIC balance.
+            EX: 000007530+ will get converted to 75.30
+            </summary>
+            <param name="BalanceValue">String to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.DateFormat(System.String)">
+            <summary>
+            Will format a date in mm/dd/yyyy or mm/dd/yy format.
+            Will work correctly if date passed in is YYYYMMDD or MMDDYY format.
+            </summary>
+            <param name="inInputDate">Date to format</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.CenturyDateFormat(System.String)">
+            <summary>
+            Formats a date correctly if 2 digit year given.
+            </summary>
+            <param name="inInputDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.DateFixer_2DigitYear(System.String)">
+            <summary>
+            Will format a date correctly that comes over as 2 digit year.
+            </summary>
+            <param name="inInputDate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.DateFormatter(System.String,System.String,System.String)">
+            <summary>
+            Parses a date correctly by giving current format and what format to parse date to.
+            EX: 02152018, "MMddyyyy", "MM/dd/yyyy"
+            </summary>
+            <param name="inDate">Date to parse</param>
+            <param name="inCurrentFormat">Current format of date</param>
+            <param name="inNewFormat">New format of date</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.FormatAsDate(System.String)">
+            <summary>
+            Formats string as date. If not able to parse date, will default to min value "1/1/0001"
+            </summary>
+            <param name="inDate">Date to parse</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.TakeStr(System.String,System.Int32)">
+            <summary>
+            Will take left of string based on max characters allowed.
+            </summary>
+            <param name="inStr"></param>
+            <param name="inNumChar">Total max characters for string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetLeftOfStr(System.String,System.Int32)">
+            <summary>
+            Get left # of characters of string
+            </summary>
+            <param name="inStr">Pass string in</param>
+            <param name="inNumChar">Get total characters left of string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetRightOfStr(System.String,System.Int32)">
+            <summary>
+            Get right # of characters of string
+            </summary>
+            <param name="inStr">Pass string in</param>
+            <param name="inNumChar">Get total characters right of string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ScrubSSNField(System.String)">
+            <summary>
+            Scrubs SSN to see if valid or not. If valid, will return ssn, else wil blank ssn.
+            This will only check minimum criteria to see if valid ssn.
+            </summary>
+            <param name="inStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.SsnValid(System.String)">
+            <summary>
+            Scrubs SSN to see if valid or not. If valid, will return ssn, else wil blank ssn.
+            This will check correctly if a SSN is invalid based on SSN criteria.
+            </summary>
+            <param name="socialIn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.PhoneValid(System.String)">
+            <summary>
+            Checks if a phone number is valid
+            Stole from JOE.
+            If valid, phone number will return. If not valid, blank will return.
+            </summary>
+            <param name="numberIn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.StringSplitFix(System.String,System.Int32,System.Int32,System.String[]@)">
+            <summary>
+            Splits a string by xxx length.
+            EX: "THIS STRING NEEDS TO BE SPLIT"
+            SPLIT BY 10 characters. Will split string by 10 characters each "word", but could be less due to not splitting a word apart. NEEDS will not be split apart. NEEDS would go with next word/part.
+            </summary>
+            <param name="inOldValue">String that needs to be split apart</param>
+            <param name="inNumLengthSplit"># of characters to split string by</param>
+            <param name="inNumSplitWords"># of how many words allowed in each array/split position</param>
+            <param name="inNewValue">Output of string split up</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.FormatAmountWithDecimals(System.String)">
+            <summary>
+            Pass in an amount in string format to get decimal part added.
+            EX: 100 will turn to 100.00. 23.36 will stay 23.36. -23.36 will stay -23.36.
+            </summary>
+            <param name="inTempAmt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetAdditiveInverse(System.String)">
+            <summary>
+            Gets additive inverse(opposite)
+            EX: 23.36 will turn to -23.36. -23.36 will turn to 23.36.
+            </summary>
+            <param name="inStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.FormatDecimalForAmt(System.String)">
+            <summary>
+            Pass in an amount in string format.
+            This will format to get .(decimal) added
+            1227 passed in wil turn into 12.27
+            </summary>
+            <param name="inStr">pass in amount as string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetDistinctCharacters(System.String)">
+            <summary>
+            Pass in a string and will return distinct characters from string.
+            EX: 12345AA55, will return 12345A
+            EX: 999999 will return 9.
+            </summary>
+            <param name="inStr">String to check distinct characters on</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetMonthName(System.Int32,System.Boolean)">
+            <summary>
+            Pass in month number to get month name.
+            EX: 1 will return "JANUARY" if inGetFullName set to true
+            EX: 1 will return "JAN" if inGetLongName set to false
+            </summary>
+            <param name="inMonNum">Pass in month as integer</param>
+            <param name="inGetFullName">If you want full name of month, set this to TRUE. If you want abbreviated month, set to FALSE.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetMonthNumber(System.String)">
+            <summary>
+            Pass in month name to get month number.
+            </summary>
+            <param name="inMonthName">Pass in month name, full NAME, not abbreviated</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetFullMonthNameFromAbbreviatedName(System.String)">
+            <summary>
+            Get full month name from abbreviated month name
+            </summary>
+            <param name="abbreName">Pass in Abbreviated month name FULL month name. EX: "JANUARY"</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetAbbreviatedNameFromFullName(System.String)">
+            <summary>
+            Get abbreviated month name from full month name
+            </summary>
+            <param name="fullMonName">Pass in FULL month name. EX: "JANUARY"</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.UserAdmin(System.String)">
+            <summary>
+            Checks if current user is admin/macro.
+            </summary>
+            <param name="inUser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.DisplayMessageBox(System.String,System.String,System.Windows.Forms.MessageBoxButtons,System.Windows.Forms.MessageBoxIcon,System.Windows.Forms.DialogResult@)">
+            <summary>
+            Creates windows popup for alerts/messages. System.Windows.Forms will need to be added as a reference.
+            </summary>
+            <param name="inMsgText">Pass in what message to display in messagebox</param>
+            <param name="inMsgCaption">Pass in what caption/title of message box should display</param>
+            <param name="inMsgButtons">Pass in what buttons to display in message box</param>
+            <param name="inMsgBoxIcon">Pass in what icon to display in message box</param>
+            <param name="inDialogRes">Pass back dialogresult</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetAge(System.String,System.String,System.String,System.String)">
+            <summary>
+            Get age between two dates
+            </summary>
+            <param name="inDobDate">Pass in date of birth</param>
+            <param name="inDobDateFormat">Pass in dob format. EX: "MM/dd/yyyy"</param>
+            <param name="inEndDate">Pass in end date to compare.</param>
+            <param name="inEndDateFormat">Pass in end date format. EX: "MM/dd/yyyy"</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemoveSymbols(System.String)">
+            <summary>
+            Removes unneededed characters. Keeps alpha, numbers, and spaces
+            </summary>
+            <param name="inStr">Pass in string to scrub</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemovePunctuation(System.String)">
+            <summary>
+            Removes punctuation from a string
+            </summary>
+            <param name="inStr">Pass in string to remove from</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RemoveAlpha(System.String)">
+            <summary>
+            Remove alpha characters
+            </summary>
+            <param name="inStr">Pass in string to remove alpha</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ConvertSerialDateAsDate(System.String)">
+            <summary>
+            Converts a date that is in text/excel serial date format
+            Return a DateTime equivalent to the specified OLE Automation Date.
+            Dates look like this: 43592 comes out to 5/7/19
+            EX: DateTime.FromOADate(43592) --- pass in "43592"
+            </summary>
+            <param name="inDateStr">Pass in date string to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.RepeatStr(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Pass in string to repeat.
+            </summary>
+            <param name="inStrToRepeat">Pass in string to repeat</param>
+            <param name="inRepeatCount">Pass in # of times to repeat string. EX: 5</param>
+            <param name="trimLastCharacter">Set to true if you want to remove last character. EXAMPLE: ?, passed in. you want to get rid of last comma in string after repeateing.</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ConvertAmtAsCurrency(System.Decimal)">
+            <summary>
+            Pass in decimal to convert as currency.
+            EX: Pass in 4.53. Will convert as $4.53
+            </summary>
+            <param name="inAmtStr">Pass in decimal to convert</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.FindLastWeekDayDate(System.DateTime,System.DayOfWeek)">
+            <summary>
+            Get date of LAST weekday needed from date.
+            Example: Need the date for last Wednesday, pass in current date/date to look at, and Wednesday for dayofweek.
+            </summary>
+            <param name="inCurDate">Pass in current date or date to look at</param>
+            <param name="inDayOfWeek">Pass in what weekday looking for. If Wednesday, pass in DayOfWeek.Wednesday</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.FindNextWeekDayDate(System.DateTime,System.DayOfWeek)">
+            <summary>
+            Get date of NEXT weekday needed from date.
+            Example: Need the date for next Wednesday, pass in current date/date to look at, and Wednesday for dayofweek.
+            </summary>
+            <param name="inCurDate">Pass in current date or date to look at</param>
+            <param name="inDayOfWeek">Pass in what weekday looking for. If Wednesday, pass in DayOfWeek.Wednesday</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetFirstDayOfMonth(System.DateTime)">
+            <summary>
+            Gets first day of month from date passed in
+            </summary>
+            <param name="inDate">Pass in date</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.GetLastDayOfMonth(System.DateTime)">
+            <summary>
+            Gets last day in month from date passed in
+            </summary>
+            <param name="inDate">Pass in date</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ParseDateFromString(System.String)">
+            <summary>
+            Pass in a string and function will try to parse the date out. if it can't parse the date, it will return null.
+            </summary>
+            <param name="inStr">Pass in string to try to parse date</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.CountOccurrenceInString(System.String,System.String)">
+            <summary>
+            Check # of occurrences a character is found in string
+            </summary>
+            <param name="inStr">Pass in string</param>
+            <param name="inCharToSearch">Pass in character to search in string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.CheckDiffDaysBetweenDates(System.DateTime,System.DateTime)">
+            <summary>
+            Check difference between two dates in days
+            </summary>
+            <param name="inStartDate">Pass in start date</param>
+            <param name="inEndDate">Pass in end date</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.FormatStringAsDecimal(System.String)">
+            <summary>
+            Pass in a string to format as a decimal.
+            EXAMPLE: Pass in "$3,215.16", will return 3215.16
+            </summary>
+            <param name="inStr">Pass in decimal string</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.SplitStringInParts(System.String,System.Int32,System.Char)">
+            <summary>
+            Pass in string to split into array
+            </summary>
+            <param name="inStr">String to split</param>
+            <param name="inMaxLength">Max length for each part in array. EX: Pass in 10 if each element in array should be 10 in length or less</param>
+            <param name="inSplitBy">Pass in how to split string to array.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.CheckScientificNotation(System.Data.DataTable)">
+            <summary>
+            Check if there is any scientific notation found in the datatable passed in. Alerts user if found.
+            </summary>
+            <param name="inDT">Pass in datatable to check</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.CheckIfVsAdmin">
+            <summary>
+            Check if user running vs is admin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.ReturnStateAbbreviation(System.String)">
+            <summary>
+            Pass in state name and return state abbrieviation
+            </summary>
+            <param name="inState"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.GenFunctions.MoveDtColumn(System.Data.DataTable,System.String,System.String)">
+            <summary>
+            Move columns around
+            </summary>
+            <param name="inDT">Pass in datatable</param>
+            <param name="inMoveColumnName">Pass in which column to move. Pass in column name</param>
+            <param name="inBeforeWhichColumnName">Pass in which column to move column before. Pass in column name</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.LogFileRun">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.WriteLogFile(System.Boolean,System.String,System.Boolean,System.String,System.Boolean,System.String,System.Boolean)">
+            <summary>
+            Writes log files for automated processes.
+            </summary>
+            <param name="isSuccess">If process ran successfully, set to true. If not, set to false.</param>
+            <param name="inErr">If failed and there was an error. If multiple emails, delimit/split by ;(semi colon) EXAMPLE: kangv@americollect.com;kang@amc.com</param>
+            <param name="inSendErrEmail">Set to true if should email fail</param>
+            <param name="inErrEmailTo">Email to send to. If multiple emails, delimit/split by ;(semi colon)
+            EXAMPLE: kangv@americollect.com;kang@amc.com</param>
+            <param name="inSendSuccessEmail">Set to true if want to send email that process was successfully</param>
+            <param name="inSuccessEmailTo">If want to send success email, add who should email</param>
+            <param name="inErrEmailHighPriority">DEFAULTS TO FALSE. Set to true if high priority email</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.SuccessEmailer(System.String,System.Boolean)">
+            <summary>
+            Emails success email if needed.
+            </summary>
+            <param name="inSuccessEmailTo">Passes in email to send success to</param>
+            <param name="inHighPri">DEFAULTS TO FALSE. Set to true if high priority email</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.ErrorEmailer(System.String,System.String,System.Boolean)">
+            <summary>
+            Emailer for sending process errors/fails.
+            </summary>
+            <param name="inErr">Specified error</param>
+            <param name="inErrEmailTo">Email to send error to</param>
+            <param name="inHighPri">DEFAULTS TO FALSE. Set to true if high priority email</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.InsertRunLog(System.Boolean,System.String,System.TimeSpan,System.String)">
+            <summary>
+            Inserts log into mysql when process runs.
+            </summary>
+            <param name="inSuccess">Set to true if successful run or false if fail</param>
+            <param name="inFailReason">If fail, pass in fail reason</param>
+            <param name="inTotalRunTime">Pass in total run timespan</param>
+            <param name="inTotalRunTimeStr">Pass in total run time string</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.InsertStartLog">
+            <summary>
+            Insert process start run to database
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.UpdateEndLog(System.Boolean,System.String,System.TimeSpan,System.String)">
+            <summary>
+            Update process end run to database
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.LogFile.InsertWindataFailRecord(System.String,System.String,System.String,System.Int32,System.String,System.String,System.Boolean,System.Boolean,System.Exception,System.Boolean@)">
+            <summary>
+            Inserts into database if failed to read or write to Bloodhound for WINDATA table.
+            **This uses Alex C's supportmain DB.
+            </summary>
+            <param name="inNumber">Pass in Account# or Debtor#</param>
+            <param name="inWdtype">Pass in Window Type (D or A)</param>
+            <param name="inWdcode">Pass in Window Code</param>
+            <param name="inWdField">Pass in what field it was reading/updating. (#1-16)</param>
+            <param name="inNewValue">Pass in what the new value should be</param>
+            <param name="inWdPerson">Pass in sql person code for update</param>
+            <param name="inIsReadQuery">Set to true if reading Bloodhound query, or false if not</param>
+            <param name="inIsWriteQuery">Set to true if updating/inserting to Bloodhound, or false if not</param>
+            <param name="inEx">Pass in exception from fail</param>
+            <param name="inOkContinueOnError">Pass back out if ok to continue or not</param>
+        </member>
+        <member name="T:AmcLibrary_KLV.NbFunctions">
+            <summary>
+            Commonly used for NB
+            </summary>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.NameScrub(System.String)">
+            <summary>
+            Scrubs names.
+            </summary>
+            <param name="inStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.ScrubZIP(System.String)">
+            <summary>
+            Scrub zip codes.
+            </summary>
+            <param name="inStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.RepeatingPhone(System.String)">
+            <summary>
+            Will check if phone# is repeating ph#, bad ph#
+            </summary>
+            <param name="inStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.PhoneMaster(System.String[],System.String,System.String@,System.String@)">
+            <summary>
+            Phone master used to get best ph# from nb.
+            </summary>
+            <param name="inCurrentRow"></param>
+            <param name="inPhLoc"></param>
+            <param name="inHph"></param>
+            <param name="inWph"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.ScrubSSN(System.Data.DataTable)">
+            <summary>
+            Will loop through nb data and check for valid ssns.
+            </summary>
+            <param name="inDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.AD1_LengthScrub(System.Data.DataTable)">
+            <summary>
+            Scrubs AD1. AD1 max length should be 50. Everything else should pass 50 should be added to front of AD2.
+            </summary>
+            <param name="inDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.FormatAddress(System.Data.DataTable)">
+            <summary>
+            Move 2nd part of ad1 to ad2
+            </summary>
+            <param name="inDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.DodChecker(System.Data.DataTable)">
+            <summary>
+            Gets DOD from LAD/LPD
+            </summary>
+            <param name="inDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.MakeACMT(System.Data.DataTable)">
+            <summary>
+            Format ACMT correctly from data in nb.
+            </summary>
+            <param name="inDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.AcmtFormatter(System.String)">
+            <summary>
+            Formats ACMT field correctly. Gets rid of .00 if right of decimal 0 cents.
+            </summary>
+            <param name="inAcmtField"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.Note_Deduper(System.Data.DataTable,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets rid of duplicate notes.
+            </summary>
+            <param name="inDT"></param>
+            <param name="inUniqueIdCol"></param>
+            <param name="inGarLnCol"></param>
+            <param name="inGarFnCol"></param>
+            <param name="inPtLnCol"></param>
+            <param name="inPtFnCol"></param>
+            <param name="inPtMiCol"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.GAR_PT_MINOR(System.Data.DataTable,System.String,System.String,System.String,System.Data.DataTable@)">
+            <summary>
+            Will check if guarantor=patient, if guarantor is a minor
+            </summary>
+            <param name="inDT"></param>
+            <param name="inClientName"></param>
+            <param name="inSendTo"></param>
+            <param name="inClientNbFolder"></param>
+            <param name="inNewFinalDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.AlphaCheck(System.Data.DataTable,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.DataTable@)">
+            <summary>
+            Alphacheck will split names if client requests alpha check. Means we only get certain data from client. 
+            EXAMPLE: Listing guarantor last names starting with A - ending with L.
+            </summary>
+            <param name="inDT"></param>
+            <param name="inNameCol"></param>
+            <param name="inStartAlpha"></param>
+            <param name="inEndAlpha"></param>
+            <param name="inToEmail"></param>
+            <param name="inClientName"></param>
+            <param name="inClientNbFolder"></param>
+            <param name="inNewFinalDT"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.DAP_Master(System.String,System.Data.DataTable,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String,System.Data.DataTable@,System.Data.DataTable@,System.Data.DataTable@,System.Data.DataTable@,System.Data.DataTable@)">
+            <summary>
+            
+            </summary>
+            <param name="inDB1orDB5">Pass in DB1 or DB5</param>
+            <param name="inFinalDT">Pass in final dt to use for dupe check</param>
+            <param name="inClientName">Pass in Client Name</param>
+            <param name="inClientGroup">Pass in client group</param>
+            <param name="inCField">If C field dupe, pass in c field</param>
+            <param name="isSoftDupe">Set to true if a soft dupe check</param>
+            <param name="isSoftDupeAndList">THIS PART NOT NOT WORK. IGNORE THIS CHECK. Set to true if we will still list soft dupe.</param> 
+            <param name="isHardDupe">Set to true if a hard dupe check</param>
+            <param name="isCFieldDupe">Set to true if a c window dupe check</param>
+            <param name="inClientNbFolder">Pass in Client NB folder</param>
+            <param name="inNewFinalDT">Will pass back new final DT</param>
+            <param name="inDapFinalDT">Will pass back new dap final DT</param>
+            <param name="inSoftDupesDT">If not using this one, set as "out _" This Will pass back soft dupes dt</param>
+            <param name="inHardDupesDT">If not using this one, set as "out _" Will pass back hard dupe dt</param>
+            <param name="inCWinDupesDT">If not using this one, set as "out _" Will pass back c win dupe dt</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.AddNbphValues(System.Data.DataTable)">
+            <summary>
+            Take nbph data from excel/datatable and add to struct
+            </summary>
+            <param name="inNbphDT">Pass in nbph datatable</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NbFunctions.WriteNbFile(System.Data.DataTable,System.String,System.String)">
+            <summary>
+            Writes client data in Bloodhound NB file
+            </summary>
+            <param name="inDT"></param>
+            <param name="inClientFolder"></param>
+            <param name="inClientName"></param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NoticeFunctions.QueryDxjHistory(System.String,System.Int32,System.Int32,System.Boolean@,System.Boolean@,System.String@,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries ADATA:DXJ windows that are passed in for email and mail fields.
+            </summary>
+            <param name="inDbtr">Pass debtor to query</param>
+            <param name="inEmlWinField">Pass in email window field. EXAMPLE: ADATA:DXJ1 -- pass in 1</param>
+            <param name="inMailWinField">Pass in email window field. EXAMPLE: ADATA:DXJ9 -- pass in 9</param>
+            <param name="inIsEmail">If most recent update is email, this will set to true</param>
+            <param name="inIsMail">If most recent update is mail, this will set to true</param>
+            <param name="inDxjUpdatedBy">Will pass back person code who uppated email/mail</param>
+            <param name="inCnBH">Pass in connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.NoticeFunctions.QueryDeHistory(System.String,System.String,System.String@,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries ADATA:DE7, to see who updated notice2send
+            </summary>
+            <param name="inDbtr"></param>
+            <param name="inNoticeType">Pass in notice type. EXAMPLE: FDDCB or LOA</param>
+            <param name="inDeUpdatedBy">Will pass back person code who uppated email/mail</param>
+            <param name="inCnBH">Pass in connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.QueryScoresTable">
+            <summary>
+            Queries ScoreRevamp table for scores to use for processes.
+            </summary>  
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.QueryDebtorScore(System.String,System.Data.Odbc.OdbcConnection,System.Nullable{System.Int32}@,System.String@)">
+            <summary>
+            Get debtor score and vendor source from score revamp db.
+            </summary>
+            <param name="inDbtrNum">Pass in debtor#</param>
+            <param name="inScore">Pass back debtor score</param>
+            <param name="inVendorSource">Pass back vendor source</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.QueryConvertedTuScoreToExperian(System.Int32,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries transunion score from sql table and passes back experian score.
+            </summary>
+            <param name="inCurrentTuScore">Pass in transunion score</param>
+            <param name="inCnSQL">Pass in sql connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.QueryConvertedExperianScoreToTu(System.Int32,System.Data.Odbc.OdbcConnection)">
+            <summary>
+            Queries experian score from sql table and passes back transunion score.
+            </summary>
+            <param name="inCurrentExpScore">Pass in experian score</param>
+            <param name="inCnSQL">Pass in sql connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.QueryConversionScoreTable">
+            <summary>
+            Queries conversion score table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.GetConvertedScore(System.Int32,System.String)">
+            <summary>
+            Get converted score
+            </summary>
+            <param name="inScoreToConvert">Pass in score to convert</param>
+            <param name="inScoreType">Pass in which score type this is</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.SqlConnectionStr(System.String,System.String,System.Boolean,System.String,System.String,System.String)">
+            <summary>
+            Creates sql connection string from ssms
+            </summary>
+            <param name="inDataSource">Pass in datasource. EX: AMCDB10-T</param>
+            <param name="inDatabase">Pass in database name. EX: EBOKPI</param>
+            <param name="inSetMultipleActiveResultSet">Defaults to false, but set to true if querying through process.</param>
+            <param name="inUser">Pass in sql user name if need to specify user/pwd. If not needed, pass blank in.</param>
+            <param name="inDomain">Pass in sql domain. DEFAULTS to correct domain if not specified. If not needed, pass blank in.</param>
+            <param name="inPwd">Pass in sql pwd if need to specify user/pwd. If not needed, pass blank in.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.StoreProcessRunDate(System.String,System.String,System.DateTime,System.Boolean)">
+            <summary>
+            Store process run date
+            </summary>
+            <param name="inProcessID">Pass in process id</param>
+            <param name="inProcessName">Pass in process name</param>
+            <param name="inProcessRunDate">Pass in process date</param>
+            <param name="inTestMode">Pass if test mode or not. Defaults to false. If test mode, will store to test ssms table, else to production table</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.GetLastProcessRun(System.String,System.Boolean)">
+            <summary>
+            Get last process run date
+            </summary>
+            <param name="inProcessID">Pass in process id</param>
+            <param name="inTestMode">Pass if test mode or not. Defaults to false. If test mode, will query test ssms table, else production table</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.GetRunDate(System.DateTime,System.DateTime,System.Int32)">
+            <summary>
+            Get run date based on date passed in and # days off
+            </summary>
+            <param name="inLastRunDate">Pass in last run date</param>
+            <param name="inActualRunDate">Pass in actual run date</param>
+            <param name="inNumberDaysOff">Pass in normal # days off from normal run</param>
+            <returns></returns>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.EmailBadRun(System.String,System.String,System.Nullable{System.DateTime},System.DateTime,System.String)">
+            <summary>
+            Email if process has issues running based on last run date
+            </summary>
+            <param name="inProcessId">Pass in process id</param>
+            <param name="inProcessName">Pass in process name</param>
+            <param name="inLastRunDate">Pass in last run date found</param>
+            <param name="inNeededLastRun">Pass in what the last run date should be</param>
+            <param name="inToEmail">Pass in who to send email to. Defaults to send to KANG</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.OpenSqlConnection(System.Data.IDbConnection)">
+            <summary>
+            Open sql connection if closed
+            </summary>
+            <param name="inConn">Pass in sql connection</param>
+        </member>
+        <member name="M:AmcLibrary_KLV.SqlFunctions.CloseSqlConnection(System.Data.IDbConnection)">
+            <summary>
+            Close sql connection if open
+            </summary>
+            <param name="inConn">Pass in sql connection</param>
+        </member>
+    </members>
+</doc>

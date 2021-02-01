@@ -1,0 +1,65 @@
+﻿@*This page is used if the worker is specified in the search and the user is not*@
+@page "/searchresults/{startDateTime}/{endDateTime}"
+@*This page is used if the worker is specified in the search and the user is not*@
+@page "/searchresults/worker/{startDateTime}/{endDateTime}/{inWorker}"
+@*This page is used if the user is specified in the search and the worker is not*@
+@page "/searchresults/user/{startDateTime}/{endDateTime}/{uniqueUserToSearch}"
+@*This page is used if all fields in the form are filled out*@
+@page "/searchresults/{startDateTime}/{endDateTime}/{uniqueUserToSearch}/{inWorker}"
+
+@using WorkerStats.Data
+@inject WorkerStatsService WorkerStatsService
+
+
+<div class="container-fluid">
+    <form>
+        <input type="button" id="backButton" class="btn btn-default" value="Back to worker stats" onclick="history.back()" />
+    </form>
+    <h3> @inWorker Search Results</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Avg</th>
+                        <th>Count</th>
+                        <th>Type</th>
+                        <th>Time Spent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var workerStat in workerStats)
+                    {
+                        <tr>
+                            <td>@workerStat.Username</td>
+                            <td>@workerStat.AverageSecondsElapsed</td>
+                            <td>@workerStat.Count</td>
+                            <td>@workerStat.InWorker</td>
+                            <td>@workerStat.TimeSpent</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    //Parameters for SearchResults razor component
+    [Parameter]
+    public string startDateTime { get; set; }
+    [Parameter]
+    public string endDateTime { get; set; }
+    [Parameter]
+    public string uniqueUserToSearch { get; set; }
+    [Parameter]
+    public string inWorker { get; set; }
+
+    private List<WorkerStats> workerStats { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        workerStats = await WorkerStatsService.SearchResultsAsync(startDateTime, endDateTime, uniqueUserToSearch, inWorker);
+    }
+}
