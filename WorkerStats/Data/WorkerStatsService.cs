@@ -81,7 +81,7 @@ namespace WorkerStats.Data
                     {
                         while (drSQL.Read())
                         {
-                            workerStatsList.Add(new WorkerStats(drSQL["Username"].ToString(), convertSeconds(drSQL["AVG"].ToString()), drSQL["Count"].ToString(), drSQL["InWorker"].ToString(), convertSeconds(drSQL["TimeSpent"].ToString())));
+                            workerStatsList.Add(new WorkerStats(drSQL["Username"].ToString(), convertSeconds(drSQL["AVG"].ToString()), drSQL["Count"].ToString(), drSQL["InWorker"].ToString(), convertSeconds(drSQL["TimeSpent"].ToString()), drSQL["TimeSpent"].ToString()));
                         }
                     }
                 }
@@ -290,7 +290,7 @@ namespace WorkerStats.Data
                     {
                         while (drSQL.Read())
                         {
-                            workerStatsList.Add(new WorkerStats(drSQL["Username"].ToString(), convertSeconds(drSQL["AVG"].ToString()), drSQL["Count"].ToString(), drSQL["InWorker"].ToString(), convertSeconds(drSQL["TimeSpent"].ToString())));
+                            workerStatsList.Add(new WorkerStats(drSQL["Username"].ToString(), convertSeconds(drSQL["AVG"].ToString()), drSQL["Count"].ToString(), drSQL["InWorker"].ToString(), convertSeconds(drSQL["TimeSpent"].ToString()), drSQL["TimeSpent"].ToString()));
                         }
                     }
                 }

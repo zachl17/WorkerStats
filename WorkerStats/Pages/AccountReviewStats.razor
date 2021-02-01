@@ -70,17 +70,21 @@ else
                                 <td>@workerStat.AverageSecondsElapsed</td>
                                 <td>@workerStat.Count</td>
                                 <td>@workerStat.InWorker</td>
-                                <td>@workerStat.TimeSpent</td>
+                                <td>@workerStat.ConvertedTimeSpent</td>
                             </tr>
                         }
-                        <tr>
-                            <td><b>Totals</b></td>
-                            @foreach (var workerStat in workerStats)
-                            {
-                                totalCount += long.Parse(workerStat.Count);
-                            }
-                            <td>@totalCount</td>
-                        </tr>
+                    <tr>
+                        <td><b>Totals</b></td>
+                        @foreach (var workerStat in workerStats)
+                        {
+                            totalCount += long.Parse(workerStat.Count);
+                            totalTimeSpent += long.Parse(workerStat.TimeSpent);
+                        }
+                        <td></td>
+                        <td><b>@totalCount</b></td>
+                        <td></td>
+                        <td><b>@WorkerStatsService.convertSeconds(totalTimeSpent.ToString())</b></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -126,11 +130,16 @@ else
                     <tbody>
                         @foreach (var workerStatsRemainingTotal in workerStatsRemainingTotals)
                         {
+                            remainingTotalCount += long.Parse(workerStatsRemainingTotal.Count);
                             <tr>
                                 <td>@workerStatsRemainingTotal.InWorker</td>
                                 <td>@workerStatsRemainingTotal.Count</td>
                             </tr>
                         }
+                    <tr>
+                        <td><b>Totals</b></td>
+                        <td><b>@remainingTotalCount</b></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -139,75 +148,77 @@ else
     }
 
     @code {
-    private string loggedInUsername = Environment.UserName;
-    private string currentPage = "AccountReviewPage";
-    private string currentPageForReload = "/accountreviewstats";
-    private static Timer aTimer;
+        private string loggedInUsername = Environment.UserName;
+        private string currentPage = "AccountReviewPage";
+        private string currentPageForReload = "/accountreviewstats";
+        private static Timer aTimer;
 
-    //For form fields
-    private string inWorker;
-    private string uniqueUserToSearch;
-    public static DateTime currentDate = DateTime.Now;
-    string currentDateString = currentDate.ToString("yyyy-MM-dd");
-    DateTime startDateString = currentDate;
-    DateTime endDateString = currentDate;
+        //For form fields
+        private string inWorker;
+        private string uniqueUserToSearch;
+        public static DateTime currentDate = DateTime.Now;
+        string currentDateString = currentDate.ToString("yyyy-MM-dd");
+        DateTime startDateString = currentDate;
+        DateTime endDateString = currentDate;
 
-    private List<WorkerStats> workerStats { get; set; }
-    private List<WorkerStats> workerStatsRemainingTotals { get; set; }
-    private List<string> uniqueUsers = new List<string>();
-    private List<string> uniqueWorkers = new List<string>();
+        private List<WorkerStats> workerStats { get; set; }
+        private List<WorkerStats> workerStatsRemainingTotals { get; set; }
+        private List<string> uniqueUsers = new List<string>();
+        private List<string> uniqueWorkers = new List<string>();
 
-    public long totalCount;
+        public long totalCount;
+        public long remainingTotalCount;
+        public long totalTimeSpent;
 
-    protected override async Task OnInitializedAsync()
-    {
-        aTimer = new System.Timers.Timer();
-        //set timer to 5 minutes (300000 milliseconds)
-        aTimer.Interval = 300000;
-        //hook up the Elapsed event for the timer
-        aTimer.Elapsed += OnTimedEvent;
-        //have the timer fire repeated events (true is the default)
-        aTimer.AutoReset = true;
-        //start the timer
-        aTimer.Enabled = true;
-
-        //Get todays stats from AllWorkerStats table
-        workerStats = await WorkerStatsService.GetStatsAsync(currentPage);
-        workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
-
-        //Get unique usernames from list to populate form with
-        uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
-        //Get unique worker types from list to populate form with
-        uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
-    }
-
-    //event to fire after millisecods elapsed = interval
-    private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
-    {
-        navigationManager.NavigateTo(currentPageForReload);
-    }
-
-    //search workerstats table based on values in form
-    protected void SearchStats()
-    {
-        string startDate = startDateString.ToString("yyyy-MM-dd");
-        string endDate = endDateString.ToString("yyyy-MM-dd");
-
-        if (String.IsNullOrEmpty(uniqueUserToSearch) && String.IsNullOrEmpty(inWorker))
+        protected override async Task OnInitializedAsync()
         {
-            navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}");
+            aTimer = new System.Timers.Timer();
+            //set timer to 5 minutes (300000 milliseconds)
+            aTimer.Interval = 300000;
+            //hook up the Elapsed event for the timer
+            aTimer.Elapsed += OnTimedEvent;
+            //have the timer fire repeated events (true is the default)
+            aTimer.AutoReset = true;
+            //start the timer
+            aTimer.Enabled = true;
+
+            //Get todays stats from AllWorkerStats table
+            workerStats = await WorkerStatsService.GetStatsAsync(currentPage);
+            workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
+
+            //Get unique usernames from list to populate form with
+            uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
+            //Get unique worker types from list to populate form with
+            uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
         }
-        else if (!String.IsNullOrEmpty(uniqueUserToSearch) && String.IsNullOrEmpty(inWorker))
+
+        //event to fire after millisecods elapsed = interval
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            navigationManager.NavigateTo($"/searchresults/user/{startDate}/{endDate}/{uniqueUserToSearch}");
+            navigationManager.NavigateTo(currentPageForReload);
         }
-        else if (String.IsNullOrEmpty(uniqueUserToSearch) && !String.IsNullOrEmpty(inWorker))
+
+        //search workerstats table based on values in form
+        protected void SearchStats()
         {
-            navigationManager.NavigateTo($"/searchresults/worker/{startDate}/{endDate}/{inWorker}");
+            string startDate = startDateString.ToString("yyyy-MM-dd");
+            string endDate = endDateString.ToString("yyyy-MM-dd");
+
+            if (String.IsNullOrEmpty(uniqueUserToSearch) && String.IsNullOrEmpty(inWorker))
+            {
+                navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}");
+            }
+            else if (!String.IsNullOrEmpty(uniqueUserToSearch) && String.IsNullOrEmpty(inWorker))
+            {
+                navigationManager.NavigateTo($"/searchresults/user/{startDate}/{endDate}/{uniqueUserToSearch}");
+            }
+            else if (String.IsNullOrEmpty(uniqueUserToSearch) && !String.IsNullOrEmpty(inWorker))
+            {
+                navigationManager.NavigateTo($"/searchresults/worker/{startDate}/{endDate}/{inWorker}");
+            }
+            else
+            {
+                navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}/{uniqueUserToSearch}/{inWorker}");
+            }
         }
-        else
-        {
-            navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}/{uniqueUserToSearch}/{inWorker}");
-        }
-    }
     }

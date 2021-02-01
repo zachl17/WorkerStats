@@ -11,14 +11,16 @@ namespace WorkerStats.Data
         public string AverageSecondsElapsed { get; set; }
         public string Count { get; set; }
         public string InWorker { get; set; }
+        public string ConvertedTimeSpent { get; set; }
         public string TimeSpent { get; set; }
 
-        public WorkerStats(string username, string averageSecondsElapsed, string count, string inWorker, string timeSpent)
+        public WorkerStats(string username, string averageSecondsElapsed, string count, string inWorker, string convertedTimeSpent, string timeSpent)
         {
             Username = username;
             AverageSecondsElapsed = averageSecondsElapsed;
             Count = count;
             InWorker = inWorker;
+            ConvertedTimeSpent = convertedTimeSpent;
             TimeSpent = timeSpent;
         }
 
