@@ -86,31 +86,6 @@ namespace WorkerStats.Data
                     }
                 }
             }
-
-            //string selectSQL = @$"SELECT USER, round(avg(elapsed),2), count(*), Worker, Sum(Elapsed)
-            //        FROM(
-            //        SELECT *
-            //        FROM `WorkerStats`
-            //        WHERE date(`end`) >= CURDATE()
-            //        AND `Worker` IN {monitoredStats}
-            //        ) AS a group by user, Worker
-            //        order by Worker, count(*) DESC";
-
-            //using (OdbcConnection cnMySQL = new OdbcConnection(connectionStringSQL))
-            //{
-            //    cnMySQL.Open();
-            //    using (OdbcCommand selectMyCMD = new OdbcCommand(selectSQL, cnMySQL))
-            //    {
-            //        using (drSQL = selectCMD.ExecuteReader())
-            //        {
-            //            while (drSQL.Read())
-            //            {
-            //                workerStatsList.Add(new WorkerStats(drSQL["Username"].ToString(), convertSeconds(drSQL["AVG"].ToString()), drSQL["Count"].ToString(), drSQL["InWorker"].ToString(), convertSeconds(drSQL["TimeSpent"].ToString())));
-            //            }
-            //        }
-            //    }
-            //}
-
             return Task.FromResult(workerStatsList);
         }
 

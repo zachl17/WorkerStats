@@ -8,43 +8,61 @@
 @page "/searchresults/{startDateTime}/{endDateTime}/{uniqueUserToSearch}/{inWorker}"
 
 @using WorkerStats.Data
+@using System.Globalization 
 @inject WorkerStatsService WorkerStatsService
 
 
-<div class="container-fluid">
+@if (workerStats == null)
+{
     <form>
         <input type="button" id="backButton" class="btn btn-default" value="Back to worker stats" onclick="history.back()" />
     </form>
-    <h3> @inWorker Search Results</h3>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-dark">
-                <thead>
-                    <tr>
-                        <th>Employee</th>
-                        <th>Avg</th>
-                        <th>Count</th>
-                        <th>Type</th>
-                        <th>Time Spent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var workerStat in workerStats)
-                    {
+    <h3>No Search Results For:</h3>
+    <p>Start Date: @convertedStartDateTime</p>
+    <p>End Date: @convertedEndDateTime</p>
+    <p>User: @uniqueUserToSearch</p>
+    <p>Type: @inWorker</p>
+}
+else
+{
+    <div class="container-fluid">
+        <form>
+            <input type="button" id="backButton" class="btn btn-default" value="Back to worker stats" onclick="history.back()" />
+        </form>
+        <h3>Search Results For:</h3>
+        <p>Start Date: @convertedStartDateTime</p>
+        <p>End Date: @convertedEndDateTime</p>
+        <p>User: @uniqueUserToSearch</p>
+        <p>Type: @inWorker</p>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
                         <tr>
-                            <td>@workerStat.Username</td>
-                            <td>@workerStat.AverageSecondsElapsed</td>
-                            <td>@workerStat.Count</td>
-                            <td>@workerStat.InWorker</td>
-                            <td>@workerStat.TimeSpent</td>
+                            <th>Employee</th>
+                            <th>Avg</th>
+                            <th>Count</th>
+                            <th>Type</th>
+                            <th>Time Spent</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var workerStat in workerStats)
+                        {
+                            <tr>
+                                <td>@workerStat.Username</td>
+                                <td>@workerStat.AverageSecondsElapsed</td>
+                                <td>@workerStat.Count</td>
+                                <td>@workerStat.InWorker</td>
+                                <td>@workerStat.TimeSpent</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-
+}
 @code {
     //Parameters for SearchResults razor component
     [Parameter]
@@ -56,10 +74,14 @@
     [Parameter]
     public string inWorker { get; set; }
 
+    public string convertedStartDateTime;
+    public string convertedEndDateTime;
     private List<WorkerStats> workerStats { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        convertedStartDateTime = DateTime.ParseExact(startDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
+        convertedEndDateTime = DateTime.ParseExact(endDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
         workerStats = await WorkerStatsService.SearchResultsAsync(startDateTime, endDateTime, uniqueUserToSearch, inWorker);
     }
 }

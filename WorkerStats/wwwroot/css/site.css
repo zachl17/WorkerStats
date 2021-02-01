@@ -13,7 +13,7 @@ body {
 }
 
 .btn-primary {
-    color: #fff;
+    color: #000000;
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
@@ -26,12 +26,17 @@ h1 {
 h3 {
     font-family: 'Roboto', sans-serif;
     text-align: center;
+    color: #fff;
 }
 
 h5 {
     color: #ff0000;
     font-family: 'Roboto', sans-serif;
     text-align: center;
+}
+
+p{
+    text-align:center;
 }
 
 img {
@@ -43,6 +48,7 @@ img {
 .navbar{
     text-align: center;
     width: 100% !important;
+    font-size: 18px;
 }
 
 .navbar-nav {
@@ -63,7 +69,7 @@ img {
 
 .table{
     text-align: center;
-    background-color: #fff;
+    background-color: #26b050;
 }
 
 .table th{
@@ -88,27 +94,64 @@ img {
 
     .form label {
         margin-top: 5px;
+        margin-left: 10px;
     }
 
-    .form-group{
-        margin: 0px;
-    }
+.form-group {
+    /*margin: 0px;*/
+}
 
     /* Style the submit button */
-    .form button {
-        margin: 5px;
-        padding: 10px;
-        background-color: dodgerblue;
-        border: 1px solid #ddd;
-        color: white;
+.form button {
+    margin: 5px;
+    padding: 10px;
+    background-color: dodgerblue;
+    border: 1px solid #ddd;
+    color: #000000;
+}
+
+.form-inline {
+    background-color: #26b050;
+    border: 2px solid #000000;
+    padding: 10px;
+    margin-top: 5px;
+    width: 100% !important;
+}
+
+    /* Style the input fields */
+.form-inline input {
+    vertical-align: middle;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+    .form-inline label {
+        margin-left: 15px;
+        padding: 15px;
     }
+
+.form-inline-group {
+    margin: 0px;
+}
+
+/* Style the submit button */
+.form-inline button {
+    margin-left: 2%;
+    width: 8%;
+    padding: 10px;
+    background-color: dodgerblue;
+    border: 1px solid #ddd;
+    color: #000000;
+}
+
 /* Style the submit button */
 .btn {
     margin: 5px;
     padding: 10px;
     background-color: dodgerblue;
     border: 1px solid #ddd;
-    color: white;
+    color: #000000;
 }
 
 

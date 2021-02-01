@@ -12,39 +12,10 @@
 else
 {
 <div class="container-fluid">
-    @*<h5>@loggedInUsername</h5>*@
-    <h5>This page will automatically refresh every 5 minutes to get up to date stats</h5>
-    <h3>AR Department Worker Stats</h3>
     <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Employee</th>
-                        <th>Avg</th>
-                        <th>Count</th>
-                        <th>Type</th>
-                        <th>Time Spent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var workerStat in workerStats)
-                    {
-                        <tr>
-                            <td>@workerStat.Username</td>
-                            <td>@workerStat.AverageSecondsElapsed</td>
-                            <td>@workerStat.Count</td>
-                            <td>@workerStat.InWorker</td>
-                            <td>@workerStat.TimeSpent</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6" id="searchForm">
-            <form class="form" role="form">
+        <div class="col-12">
+            @*<h5>@loggedInUsername</h5>*@
+            <form class="form-inline" role="form">
                 <div class="form-group">
                     <label for="beginDate">Beginning Date:</label>
                     <input type="date" class="form-control" @bind="@startDateString">
@@ -76,31 +47,98 @@ else
                 <button type="button" class="btn btn-default" @onclick="SearchStats">Search</button>
             </form>
         </div>
-        <div class="col-md-6">
-            <h3>AR Department Remaining Totals</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>In Worker</th>
-                        <th>Remaining Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var workerStatsRemainingTotal in workerStatsRemainingTotals)
-                    {
+        </div>
+        <h5>This page will automatically refresh every 5 minutes to get up to date stats</h5>
+        <h3>AR Department Worker Stats</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
                         <tr>
-                            <td>@workerStatsRemainingTotal.InWorker</td>
-                            <td>@workerStatsRemainingTotal.Count</td>
+                            <th>Employee</th>
+                            <th>Avg</th>
+                            <th>Count</th>
+                            <th>Type</th>
+                            <th>Time Spent</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var workerStat in workerStats)
+                        {
+                            <tr>
+                                <td>@workerStat.Username</td>
+                                <td>@workerStat.AverageSecondsElapsed</td>
+                                <td>@workerStat.Count</td>
+                                <td>@workerStat.InWorker</td>
+                                <td>@workerStat.TimeSpent</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td><b>Totals</b></td>
+                            @foreach (var workerStat in workerStats)
+                            {
+                                totalCount += long.Parse(workerStat.Count);
+                            }
+                            <td>@totalCount</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" id="searchForm">
+                <h3>Search Worker Stats</h3>
+                <form class="form" role="form">
+                    <div class="form-group">
+                        <label for="beginDate">Beginning Date:</label>
+                        <input type="date" class="form-control" @bind="@startDateString">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date:</label>
+                        <input type="date" class="form-control" @bind="@endDateString">
+                    </div>
+                    <label for="beginDate">Name To Filter By:</label>
+                    <select class="form-control" @bind="uniqueUserToSearch">
+                        @*Show empty value on form*@
+                        <option value=""></option>
+                        @*Only show unique users*@
+                        @foreach (var uniqueUser in uniqueUsers)
+                        {
+                            <option value="@uniqueUser">@uniqueUser</option>
+                        }
+                    </select>
+                    <label for="beginDate">Type To Filter By:</label>
+                    <select class="form-control" @bind="inWorker">
+                        @*Show empty value on form*@
+                        <option value=""></option>
+                        @*Only show unique workers*@
+                        @foreach (var uniqueWorker in uniqueWorkers)
+                        {
+                            <option value="@uniqueWorker">@uniqueWorker</option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-default" @onclick="SearchStats">Search</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>AR Department Remaining Totals</h3>
+                <table class="table table-bordered">
+                    <tbody>
+                        @foreach (var workerStatsRemainingTotal in workerStatsRemainingTotals)
+                        {
+                            <tr>
+                                <td>@workerStatsRemainingTotal.InWorker</td>
+                                <td>@workerStatsRemainingTotal.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-}
+    }
 
-@code {
+    @code {
     private string loggedInUsername = Environment.UserName;
     private string currentPage = "AccountReviewPage";
     private string currentPageForReload = "/accountreviewstats";
@@ -118,6 +156,8 @@ else
     private List<WorkerStats> workerStatsRemainingTotals { get; set; }
     private List<string> uniqueUsers = new List<string>();
     private List<string> uniqueWorkers = new List<string>();
+
+    public long totalCount;
 
     protected override async Task OnInitializedAsync()
     {
@@ -137,7 +177,6 @@ else
 
         //Get unique usernames from list to populate form with
         uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
-
         //Get unique worker types from list to populate form with
         uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
     }
@@ -171,4 +210,4 @@ else
             navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}/{uniqueUserToSearch}/{inWorker}");
         }
     }
-}
+    }
