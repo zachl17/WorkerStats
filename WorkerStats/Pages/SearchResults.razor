@@ -30,10 +30,34 @@ else
         <input type="button" id="backButton" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
     </form>
     <h3>Search Results For:</h3>
-    <h5>Start Date: @convertedStartDateTime</h5>
-    <h5>End Date: @convertedEndDateTime</h5>
-    <h5>Employee: @uniqueUserToSearch</h5>
-    <h5>Type: @inWorker</h5>
+    <div class="row">
+        <div class="col-md-3">
+            <h5>Start Date:</h5>
+        </div>
+        <div class="col-md-3">
+            <h5>End Date:</h5>
+        </div>
+        <div class="col-md-3">
+            <h5>Employee:</h5>
+        </div>
+        <div class="col-md-3">
+            <h5>Type:</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h5>@convertedStartDateTime</h5>
+        </div>
+        <div class="col-md-3">
+            <h5>@convertedEndDateTime</h5>
+        </div>
+        <div class="col-md-3">
+            <h5>@uniqueUserToSearch</h5>
+        </div>
+        <div class="col-md-3">
+            <h5>@inWorker</h5>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-bordered">
@@ -86,11 +110,9 @@ else
     [Parameter]
     public string inWorker { get; set; }
 
-
     public long totalCount;
     public long remainingTotalCount;
     public long totalTimeSpent;
-
     public string convertedStartDateTime;
     public string convertedEndDateTime;
     private List<WorkerStats> workerStats { get; set; }

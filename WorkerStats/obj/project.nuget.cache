@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ae+j2gNH2KPgK/IkxdXy/MXHIVMGIGDaz2lUs+GmqTbYuycmvp6JnC6OKnaKXhf9zgMyIARyR51PC9xp37E7Zg==",
+  "dgSpecHash": "SLXBHaDHDEU7dNeYMNidVjmQWwzVDN9H15cFWmt9IG8DXM+wKTM6kjeNZOY2TnyXQWMxQo4GXjOkIcLWbHmnNg==",
   "success": true,
-  "projectFilePath": "G:\\Employee\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
+  "projectFilePath": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\zacharyl\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\zacharyl\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

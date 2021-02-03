@@ -525,11 +525,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\Employee\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
+      "projectUniqueName": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
       "projectName": "WorkerStats",
-      "projectPath": "G:\\Employee\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
+      "projectPath": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
       "packagesPath": "C:\\Users\\zacharyl\\.nuget\\packages\\",
-      "outputPath": "G:\\Employee\\ZachL\\WorkerStats\\WorkerStats\\obj\\",
+      "outputPath": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\zacharyl\\AppData\\Roaming\\NuGet\\NuGet.Config",
