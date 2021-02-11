@@ -27,35 +27,21 @@ else
 {
 <div class="container-fluid">
     <form>
-        <input type="button" id="backButton" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
+        <input type="button" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
     </form>
     <h3>Search Results For:</h3>
     <div class="row">
         <div class="col-md-3">
-            <h5>Start Date:</h5>
+            <h5>Start Date: @convertedStartDateTime</h5>
         </div>
         <div class="col-md-3">
-            <h5>End Date:</h5>
+            <h5>End Date: @convertedEndDateTime</h5>
         </div>
         <div class="col-md-3">
-            <h5>Employee:</h5>
+            <h5>Employee: @uniqueUserToSearch</h5>
         </div>
         <div class="col-md-3">
-            <h5>Type:</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <h5>@convertedStartDateTime</h5>
-        </div>
-        <div class="col-md-3">
-            <h5>@convertedEndDateTime</h5>
-        </div>
-        <div class="col-md-3">
-            <h5>@uniqueUserToSearch</h5>
-        </div>
-        <div class="col-md-3">
-            <h5>@inWorker</h5>
+            <h5>Type: @inWorker</h5>
         </div>
     </div>
     <div class="row">
@@ -64,7 +50,7 @@ else
                 <thead>
                     <tr>
                         <th>Employee</th>
-                        <th>Avg</th>
+                        <th>Average</th>
                         <th>Count</th>
                         <th>Type</th>
                         <th>Time Spent</th>
