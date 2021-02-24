@@ -28,16 +28,20 @@ namespace WorkerStats.Data
         List<WorkerStats> remainingWorkerStatsTotals = new List<WorkerStats>();
 
         //Monitored stats for each department to used in the in statement
-        private static string arMonitoredStats = @"('DCSCRUB','P6H', 'DWL', 'EMLV', 'FINDEMP', 'NAW', 'M', 'P', 'SHARED', '2. Kids', '2. Kids Help', 'MERCY_MAIL', 'DNNO', 
-    'Scrub Returned Positive Result', 'Banko Multi Type', 'NCD', 'PBT', 'PBS', 'PNC_Worker','7','CH7MEETING', 'CH7NOTICES', 'CH13MEETING', 'CH13NOTICES', 'CFR', 'TPO', 'Minor_Worker', 
-    'No_Nos_QR', 'CQC: 2K', 'CQC: BK', 'CQC: CD', 'CQC: CS', 'CQC: INS', 'CQC: LG', 'Super_Deduper', 'DUPE_LISTED', 'SSN_DOB', 'ADNC', 'Vidant System Generated', 
-    'JohnDoe', 'Interest_Rate_Notice_Issues', 'AURORA_DECEASED_CLOSED', 'Aurora_Experian_Deceased', 'CRC_Daily', 'NAPCP', 'Need_More_Pmts', 'CT_Phone_Valid', 'No_Ntc_Send', 'LGH_Worker')";
+        //    private static string arMonitoredStats = @"('DCSCRUB','P6H', 'DWL', 'EMLV', 'FINDEMP', 'NAW', 'M', 'P', 'SHARED', '2. Kids', '2. Kids Help', 'MERCY_MAIL', 'DNNO', 
+        //'Scrub Returned Positive Result', 'Banko Multi Type', 'NCD', 'PBT', 'PBS', 'PNC_Worker','7','CH7MEETING', 'CH7NOTICES', 'CH13MEETING', 'CH13NOTICES', 'CFR', 'TPO', 'Minor_Worker', 
+        //'No_Nos_QR', 'CQC: 2K', 'CQC: BK', 'CQC: CD', 'CQC: CS', 'CQC: INS', 'CQC: LG', 'Super_Deduper', 'DUPE_LISTED', 'SSN_DOB', 'ADNC', 'Vidant System Generated', 
+        //'JohnDoe', 'Interest_Rate_Notice_Issues', 'AURORA_DECEASED_CLOSED', 'Aurora_Experian_Deceased', 'CRC_Daily', 'NAPCP', 'Need_More_Pmts', 'CT_Phone_Valid', 'No_Ntc_Send', 'LGH_Worker')";
+
+        private static string arMonitoredStats = @"('P6H', 'FINDEMP', '2KD', 'SHARED', 'DNNO', 'SSN_DOB', 'EMLV', 'DWL', 'TPO', 'BANKO_MULTI_TYPE', 'MERCY_MAIL', 'CFR', 'NCD', 'PBS', 'PBT',
+    'AURORA_EXPERIAN_DECEASED', 'AURORA_DECEASED_CLOSED', 'DUPE_LISTED', 'PNC', 'MINOR', 'SUPER_DEDUPER', 'SPANISH_CALL_MONITOR', 'NEED_MORE_PMTS', 'NEED_MORE_PMTS_Y_WINDOW')";
 
         private static string legalMonitoredStats = @"('2KD', 'EMLV_LEGAL')";
 
-        private static List<string> arTables = new List<string> { @"[dbo].[AllWorkers.EMLV_Data]", "[dbo].[AllWorkers.FindEmpWorker]", "[dbo].[AllWorkers.P6HWorker]", 
-            "[dbo].[AllWorkers.DNNO_Data]", "[dbo].[AllWorkers.AuroraDeceased_ClosedData]", "[dbo].[AllWorkers.CFRemoval_Data]", "[dbo].[AllWorkers.DeceasedNCD]",
-            "[dbo].[AllWorkers.DeceasedPBS]", "[dbo].[AllWorkers.DeceasedPBT]"};
+        private static List<string> arTables = new List<string> { @"[dbo].[AllWorkers.EMLV_Data]", "[dbo].[AllWorkers.FindEmpWorker]", "[dbo].[AllWorkers.P6HWorker]", "[dbo].[AllWorkers.MercyMailData]",
+            "[dbo].[AllWorkers.DNNO_Data]", "[dbo].[AllWorkers.AuroraDeceased_ClosedData]", "[dbo].[AllWorkers.CFRemoval_Data]", "[dbo].[AllWorkers.DeceasedNCD]", "[dbo].[AllWorkers.MinorWorker_BaseDebtor]",
+            "[dbo].[AllWorkers.DeceasedPBS]", "[dbo].[AllWorkers.DeceasedPBT]", "[dbo].[AllWorkers.BankoMultiData]", "[dbo].[AllWorkers.DupeListedCheck_Data]", "[dbo].[AllWorkers.DWL_Data]",
+            "[dbo].[AllWorkers.NeedMorePmts_Data]", "[dbo].[AllWorkers.NeedMorePmts_Y_Setup]", "[dbo].[AllWorkers.PhoneDedupe_Phone]", "[dbo].[TPO_Phone_Own.Worker]"};
 
         private static List<string> legalTables = new List<string> { "[dbo].[AllWorkers.2KDFacebookWorker]", "[dbo].[AllWorkers.EMLV_LegalRevamp]" };
 
@@ -137,7 +141,7 @@ namespace WorkerStats.Data
             return Task.FromResult(remainingWorkerStatsTotals);
         }
 
-        //Search based on form fields in razor component
+        //Search based on form fields from razor component
         public Task<List<WorkerStats>> SearchResultsAsync(string start, string end, string user, string worker)
         {
             string searchSelectSQL = "";

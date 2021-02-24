@@ -153,7 +153,7 @@ else
         private string currentPageForReload = "/accountreviewstats";
         private static Timer aTimer;
 
-        //For form fields
+        //for form fields
         private string inWorker;
         private string uniqueUserToSearch;
         public static DateTime currentDate = DateTime.Now;
@@ -161,6 +161,7 @@ else
         DateTime startDateString = currentDate;
         DateTime endDateString = currentDate;
 
+        //lists to populate component's data with
         private List<WorkerStats> workerStats { get; set; }
         private List<WorkerStats> workerStatsRemainingTotals { get; set; }
         private List<string> uniqueUsers = new List<string>();
@@ -182,7 +183,7 @@ else
             //start the timer
             aTimer.Enabled = true;
 
-            //Get todays stats from AllWorkerStats table
+            //Get todays stats from the AllWorkerStats table
             workerStats = await WorkerStatsService.GetStatsAsync(currentPage);
             workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
 
