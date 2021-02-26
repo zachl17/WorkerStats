@@ -1,4 +1,6 @@
 ﻿@page "/error"
+@page "/error/{startDateTime}/{endDateTime}"
+@using System.Globalization
 
 <div class="container-fluid">
     <form>
@@ -6,11 +8,26 @@
     </form>
     <div class="row">
         <div class="col-md-12">
-            <h1 style="color:#ff0000">Start date must be earlier than the end date!</h1>
+            <h1>The start date you entered was: @convertedStartDateTime</h1>
+            <h1>The end date you entered was: @convertedEndDateTime</h1>
+            <h1 style="color:#ff0000">But the start date must be earlier than the end date!</h1>
         </div>
     </div>
 </div>
 
 @code {
+    //Parameters for SearchResults razor component
+    [Parameter]
+    public string startDateTime { get; set; }
+    [Parameter]
+    public string endDateTime { get; set; }
 
+    public string convertedStartDateTime;
+    public string convertedEndDateTime;
+
+    protected override async Task OnInitializedAsync()
+    {
+        convertedStartDateTime = DateTime.ParseExact(startDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
+        convertedEndDateTime = DateTime.ParseExact(endDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
+    }
 }

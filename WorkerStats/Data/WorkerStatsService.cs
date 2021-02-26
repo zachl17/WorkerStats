@@ -159,7 +159,7 @@ namespace WorkerStats.Data
                                 FROM(
                                 SELECT *
                                 FROM {allWorkerStatsTable}
-                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -500
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() 
                                 AND Username = '{user}'
                                 AND InWorker IN ('{inWorker}')
                                 ) AS a GROUP BY Username, InWorker
@@ -172,7 +172,7 @@ namespace WorkerStats.Data
                                 FROM(
                                 SELECT *
                                 FROM {allWorkerStatsTable}
-                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -500
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() 
                                 AND Username = '{user}'
                                 ) AS a GROUP BY Username, InWorker
                                 ORDER BY InWorker, COUNT(*) DESC";
@@ -184,32 +184,8 @@ namespace WorkerStats.Data
                                 FROM(
                                 SELECT *
                                 FROM {allWorkerStatsTable}
-                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -500
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() 
                                  AND InWorker IN ('{inWorker}')
-                                ) AS a GROUP BY Username, InWorker
-                                ORDER BY InWorker, COUNT(*) DESC";
-            }
-            //if startdate is today, endate is not today, user is not null, worker is null
-            else if (startDate == DateTime.Today.ToString("yyyy-MM-dd") && endDate != DateTime.Today.ToString("yyyy-MM-dd") && !String.IsNullOrEmpty(user) && String.IsNullOrEmpty(inWorker))
-            {
-                searchSelectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker, SUM(SecondsElapsed) AS 'TimeSpent'
-                                FROM(
-                                SELECT *
-                                FROM {allWorkerStatsTable}
-                                WHERE EndDateTime BETWEEN '{startDate} 00:00:00.001' AND '{endDate} 23:59:59.999'
-                                AND Username = '{user}'
-                                ) AS a GROUP BY Username, InWorker
-                                ORDER BY InWorker, COUNT(*) DESC";
-            }
-            //if startdate is today, endate is not today, user is null, worker is not null
-            else if (startDate == DateTime.Today.ToString("yyyy-MM-dd") && endDate != DateTime.Today.ToString("yyyy-MM-dd") && String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(inWorker))
-            {
-                searchSelectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker, SUM(SecondsElapsed) AS 'TimeSpent'
-                                FROM(
-                                SELECT *
-                                FROM {allWorkerStatsTable}
-                                WHERE EndDateTime BETWEEN '{startDate} 00:00:00.001' AND '{endDate} 23:59:59.999'
-                                AND InWorker IN ('{inWorker}')
                                 ) AS a GROUP BY Username, InWorker
                                 ORDER BY InWorker, COUNT(*) DESC";
             }
@@ -234,6 +210,17 @@ namespace WorkerStats.Data
                                 FROM {allWorkerStatsTable}
                                 WHERE EndDateTime BETWEEN '{startDate} 00:00:00.001' AND '{endDate} 23:59:59.999'
                                 AND Username = '{user}'
+                                ) AS a GROUP BY Username, InWorker
+                                ORDER BY InWorker, COUNT(*) DESC";
+            }
+            //if startdate is not today, endate is today, user is null, worker is null
+            else if (startDate != DateTime.Today.ToString("yyyy-MM-dd") && endDate == DateTime.Today.ToString("yyyy-MM-dd") && String.IsNullOrEmpty(user) && String.IsNullOrEmpty(inWorker))
+            {
+                searchSelectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker, SUM(SecondsElapsed) AS 'TimeSpent'
+                                FROM(
+                                SELECT *
+                                FROM {allWorkerStatsTable}
+                                WHERE EndDateTime BETWEEN '{startDate} 00:00:00.001' AND '{endDate} 23:59:59.999'
                                 ) AS a GROUP BY Username, InWorker
                                 ORDER BY InWorker, COUNT(*) DESC";
             }

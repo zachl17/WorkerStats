@@ -206,8 +206,10 @@ else
     {
         string startDate = startDateString.ToString("yyyy-MM-dd");
         string endDate = endDateString.ToString("yyyy-MM-dd");
+        //stop the timer
+        aTimer.Enabled = false;
 
-        if (startDateString < endDateString)
+        if (startDateString <= endDateString)
         {
             if (String.IsNullOrEmpty(uniqueUserToSearch) && String.IsNullOrEmpty(inWorker))
             {
@@ -228,7 +230,7 @@ else
         }
         else
         {
-            navigationManager.NavigateTo($"/error");
+            navigationManager.NavigateTo($"/error/{startDate}/{endDate}/");
         }
     }
 }
