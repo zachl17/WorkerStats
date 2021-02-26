@@ -85,7 +85,6 @@ G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\Razor\Shared\MainLayout.razor.g.cs
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\Razor\Shared\NavMenu.razor.g.cs
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\Razor\_Imports.razor.g.cs
-G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\Razor\Pages\Error.cshtml.g.cs
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\Razor\Pages\_Host.cshtml.g.cs
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\WorkerStats.RazorAssemblyInfo.cache
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\WorkerStats.RazorAssemblyInfo.cs
@@ -120,3 +119,5 @@ G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\staticwebassets\WorkerStats.StaticWebAssets.Manifest.cache
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\staticwebassets\WorkerStats.StaticWebAssets.xml
 G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\WorkerStats.genruntimeconfig.cache
+G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Error.razor.g.cs
+G:\Instructions\Project Analyst\ZAL\WorkerStats\WorkerStats\obj\Debug\netcoreapp3.1\Razor\Pages\Error.razor.g.cs

@@ -2,8 +2,10 @@
 
 @using WorkerStats.Data
 @using System.Timers
+@using Microsoft.Extensions.Logging
 @inject WorkerStatsService WorkerStatsService
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
+@inject ILogger<WorkerStatsService> Logger
 
 @if (workerStats == null)
 {
@@ -11,42 +13,42 @@
 }
 else
 {
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            @*<h5>@loggedInUsername</h5>*@
-            <form class="form-inline" role="form">
-                <div class="form-group">
-                    <label for="beginDate">Start Date:</label>
-                    <input type="date" class="form-control" @bind="@startDateString">
-                </div>
-                <div class="form-group">
-                    <label for="endDate">End Date:</label>
-                    <input type="date" class="form-control" @bind="@endDateString">
-                </div>
-                <label for="beginDate">Name To Filter By:</label>
-                <select class="form-control" @bind="uniqueUserToSearch">
-                    @*Show empty value on form*@
-                    <option value=""></option>
-                    @*Only show unique users*@
-                    @foreach (var uniqueUser in uniqueUsers)
-                    {
-                        <option value="@uniqueUser">@uniqueUser</option>
-                    }
-                </select>
-                <label for="beginDate">Type To Filter By:</label>
-                <select class="form-control" @bind="inWorker">
-                    @*Show empty value on form*@
-                    <option value=""></option>
-                    @*Only show unique workers*@
-                    @foreach (var uniqueWorker in uniqueWorkers)
-                    {
-                        <option value="@uniqueWorker">@uniqueWorker</option>
-                    }
-                </select>
-                <button type="button" class="btn btn-default" @onclick="SearchStats">Search</button>
-            </form>
-        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                @*<h5>@loggedInUsername</h5>*@
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="beginDate">Start Date:</label>
+                        <input type="date" class="form-control" @bind="@startDateString">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date:</label>
+                        <input type="date" class="form-control" @bind="@endDateString">
+                    </div>
+                    <label for="beginDate">Name To Filter By:</label>
+                    <select class="form-control" @bind="uniqueUserToSearch">
+                        @*Show empty value on form*@
+                        <option value=""></option>
+                        @*Only show unique users*@
+                        @foreach (var uniqueUser in uniqueUsers)
+                        {
+                            <option value="@uniqueUser">@uniqueUser</option>
+                        }
+                    </select>
+                    <label for="beginDate">Type To Filter By:</label>
+                    <select class="form-control" @bind="inWorker">
+                        @*Show empty value on form*@
+                        <option value=""></option>
+                        @*Only show unique workers*@
+                        @foreach (var uniqueWorker in uniqueWorkers)
+                        {
+                            <option value="@uniqueWorker">@uniqueWorker</option>
+                        }
+                    </select>
+                    <button type="button" class="btn btn-default" @onclick="SearchStats">Search</button>
+                </form>
+            </div>
         </div>
         <h4>This page will automatically refresh every 5 minutes to get up to date stats</h4>
         <h3>AR Department Worker Stats</h3>
@@ -73,18 +75,18 @@ else
                                 <td>@workerStat.ConvertedTimeSpent</td>
                             </tr>
                         }
-                    <tr>
-                        <td><b>Totals</b></td>
-                        @foreach (var workerStat in workerStats)
-                        {
-                            totalCount += long.Parse(workerStat.Count);
-                            totalTimeSpent += long.Parse(workerStat.TimeSpent);
-                        }
-                        <td></td>
-                        <td><b>@totalCount</b></td>
-                        <td></td>
-                        <td><b>@WorkerStatsService.convertSeconds(totalTimeSpent.ToString())</b></td>
-                    </tr>
+                        <tr>
+                            <td><b>Totals</b></td>
+                            @foreach (var workerStat in workerStats)
+                            {
+                                totalCount += long.Parse(workerStat.Count);
+                                totalTimeSpent += long.Parse(workerStat.TimeSpent);
+                            }
+                            <td></td>
+                            <td><b>@totalCount</b></td>
+                            <td></td>
+                            <td><b>@WorkerStatsService.convertSeconds(totalTimeSpent.ToString())</b></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -136,75 +138,77 @@ else
                                 <td>@workerStatsRemainingTotal.Count</td>
                             </tr>
                         }
-                    <tr>
-                        <td><b>Totals</b></td>
-                        <td><b>@remainingTotalCount</b></td>
-                    </tr>
+                        <tr>
+                            <td><b>Totals</b></td>
+                            <td><b>@remainingTotalCount</b></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+}
+
+@code {
+    private string loggedInUsername = Environment.UserName;
+    private string currentPage = "AccountReviewPage";
+    private string currentPageForReload = "/accountreviewstats";
+    private static Timer aTimer;
+
+    //for form fields
+    private string inWorker;
+    private string uniqueUserToSearch;
+    public static DateTime currentDate = DateTime.Now;
+    string currentDateString = currentDate.ToString("yyyy-MM-dd");
+    DateTime startDateString = currentDate;
+    DateTime endDateString = currentDate;
+
+    //lists to populate component's data with
+    private List<WorkerStats> workerStats { get; set; }
+    private List<WorkerStats> workerStatsRemainingTotals { get; set; }
+    private List<string> uniqueUsers = new List<string>();
+    private List<string> uniqueWorkers = new List<string>();
+
+    public long totalCount;
+    public long remainingTotalCount;
+    public long totalTimeSpent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        aTimer = new System.Timers.Timer();
+        //set timer to 5 minutes (300000 milliseconds)
+        aTimer.Interval = 300000;
+        //hook up the Elapsed event for the timer
+        aTimer.Elapsed += OnTimedEvent;
+        //have the timer fire repeated events (true is the default)
+        aTimer.AutoReset = true;
+        //start the timer
+        aTimer.Enabled = true;
+
+        //Get todays stats from the AllWorkerStats table
+        workerStats = await WorkerStatsService.GetStatsAsync(currentPage);
+        workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
+
+        //Get unique usernames from list to populate form with
+        uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
+        //Get unique worker types from list to populate form with
+        uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
     }
 
-    @code {
-        private string loggedInUsername = Environment.UserName;
-        private string currentPage = "AccountReviewPage";
-        private string currentPageForReload = "/accountreviewstats";
-        private static Timer aTimer;
+    //event to fire after millisecods elapsed = interval
+    private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        navigationManager.NavigateTo(currentPageForReload);
+    }
 
-        //for form fields
-        private string inWorker;
-        private string uniqueUserToSearch;
-        public static DateTime currentDate = DateTime.Now;
-        string currentDateString = currentDate.ToString("yyyy-MM-dd");
-        DateTime startDateString = currentDate;
-        DateTime endDateString = currentDate;
+    //search workerstats table based on values in form
+    protected void SearchStats()
+    {
+        string startDate = startDateString.ToString("yyyy-MM-dd");
+        string endDate = endDateString.ToString("yyyy-MM-dd");
 
-        //lists to populate component's data with
-        private List<WorkerStats> workerStats { get; set; }
-        private List<WorkerStats> workerStatsRemainingTotals { get; set; }
-        private List<string> uniqueUsers = new List<string>();
-        private List<string> uniqueWorkers = new List<string>();
-
-        public long totalCount;
-        public long remainingTotalCount;
-        public long totalTimeSpent;
-
-        protected override async Task OnInitializedAsync()
+        if (startDateString < endDateString)
         {
-            aTimer = new System.Timers.Timer();
-            //set timer to 5 minutes (300000 milliseconds)
-            aTimer.Interval = 300000;
-            //hook up the Elapsed event for the timer
-            aTimer.Elapsed += OnTimedEvent;
-            //have the timer fire repeated events (true is the default)
-            aTimer.AutoReset = true;
-            //start the timer
-            aTimer.Enabled = true;
-
-            //Get todays stats from the AllWorkerStats table
-            workerStats = await WorkerStatsService.GetStatsAsync(currentPage);
-            workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
-
-            //Get unique usernames from list to populate form with
-            uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
-            //Get unique worker types from list to populate form with
-            uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
-        }
-
-        //event to fire after millisecods elapsed = interval
-        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            navigationManager.NavigateTo(currentPageForReload);
-        }
-
-        //search workerstats table based on values in form
-        protected void SearchStats()
-        {
-            string startDate = startDateString.ToString("yyyy-MM-dd");
-            string endDate = endDateString.ToString("yyyy-MM-dd");
-
             if (String.IsNullOrEmpty(uniqueUserToSearch) && String.IsNullOrEmpty(inWorker))
             {
                 navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}");
@@ -222,4 +226,9 @@ else
                 navigationManager.NavigateTo($"/searchresults/{startDate}/{endDate}/{uniqueUserToSearch}/{inWorker}");
             }
         }
+        else
+        {
+            navigationManager.NavigateTo($"/error");
+        }
     }
+}

@@ -34,14 +34,16 @@ namespace WorkerStats.Data
         //'JohnDoe', 'Interest_Rate_Notice_Issues', 'AURORA_DECEASED_CLOSED', 'Aurora_Experian_Deceased', 'CRC_Daily', 'NAPCP', 'Need_More_Pmts', 'CT_Phone_Valid', 'No_Ntc_Send', 'LGH_Worker')";
 
         private static string arMonitoredStats = @"('P6H', 'FINDEMP', '2KD', 'SHARED', 'DNNO', 'SSN_DOB', 'EMLV', 'DWL', 'TPO', 'BANKO_MULTI_TYPE', 'MERCY_MAIL', 'CFR', 'NCD', 'PBS', 'PBT',
-    'AURORA_EXPERIAN_DECEASED', 'AURORA_DECEASED_CLOSED', 'DUPE_LISTED', 'PNC', 'MINOR', 'SUPER_DEDUPER', 'SPANISH_CALL_MONITOR', 'NEED_MORE_PMTS', 'NEED_MORE_PMTS_Y_WINDOW')";
+    'AURORA_EXPERIAN_DECEASED', 'AURORA_DECEASED_CLOSED', 'DUPE_LISTED', 'PNC', 'MINOR', 'SUPER_DEDUPER', 'SPANISH_CALL_MONITOR', 'NEED_MORE_PMTS', 'NEED_MORE_PMTS_Y_WINDOW', 'NO_NOS_QR',
+    'DC_SCRUB')";
 
         private static string legalMonitoredStats = @"('2KD', 'EMLV_LEGAL')";
 
         private static List<string> arTables = new List<string> { @"[dbo].[AllWorkers.EMLV_Data]", "[dbo].[AllWorkers.FindEmpWorker]", "[dbo].[AllWorkers.P6HWorker]", "[dbo].[AllWorkers.MercyMailData]",
             "[dbo].[AllWorkers.DNNO_Data]", "[dbo].[AllWorkers.AuroraDeceased_ClosedData]", "[dbo].[AllWorkers.CFRemoval_Data]", "[dbo].[AllWorkers.DeceasedNCD]", "[dbo].[AllWorkers.MinorWorker_BaseDebtor]",
             "[dbo].[AllWorkers.DeceasedPBS]", "[dbo].[AllWorkers.DeceasedPBT]", "[dbo].[AllWorkers.BankoMultiData]", "[dbo].[AllWorkers.DupeListedCheck_Data]", "[dbo].[AllWorkers.DWL_Data]",
-            "[dbo].[AllWorkers.NeedMorePmts_Data]", "[dbo].[AllWorkers.NeedMorePmts_Y_Setup]", "[dbo].[AllWorkers.PhoneDedupe_Phone]", "[dbo].[TPO_Phone_Own.Worker]"};
+            "[dbo].[AllWorkers.NeedMorePmts_Data]", "[dbo].[AllWorkers.NeedMorePmts_Y_Setup]", "[dbo].[AllWorkers.PhoneDedupe_Phone]", "[dbo].[TPO_Phone_Own.Worker]", "[dbo].[AllWorkers.NoNos_Data]",
+            "[dbo].[AllWorkers.DCScrub_Data]"};
 
         private static List<string> legalTables = new List<string> { "[dbo].[AllWorkers.2KDFacebookWorker]", "[dbo].[AllWorkers.EMLV_LegalRevamp]" };
 
@@ -68,7 +70,7 @@ namespace WorkerStats.Data
             connectionStringSQL = new ConnectToDatabase().GetConnectionSQL();
             //connectionStringSQL = new ConnectToDatabase().GetConnectionMySQL();
 
-            string selectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker, SUM(SecondsElapsed) AS 'TimeSpent'
+            string selectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker AS 'InWorker', SUM(SecondsElapsed) AS 'TimeSpent'
                     FROM(
                     SELECT *
                     FROM {allWorkerStatsTable}
@@ -120,8 +122,8 @@ namespace WorkerStats.Data
                 cnSQL.Open();
                 foreach (var table in tablesToQuery)
                 {
-                    string selectSQL = @$"SELECT InWorker, COUNT(*) AS 'Count' FROM {table} 
-                            INNER JOIN [dbo].[AllWorkers.Workers]
+                    string selectSQL = @$"SELECT InWorker AS 'InWorker', COUNT(*) AS 'Count' FROM {table} 
+                            INNER JOIN {allWorkersTable}
                             ON {table}.WorkerID = {allWorkersTable}.WorkerID
                             GROUP BY InWorker
                             ORDER BY InWorker, COUNT(*) DESC";
