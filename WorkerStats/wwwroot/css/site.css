@@ -12,10 +12,6 @@ body {
     background: linear-gradient(to top, #fff, #001A72);
 }
 
-.container-fluid {
-    /*border: 2px solid #000000;*/
-}
-
 .btn-primary {
     color: #000000;
     background-color: #1b6ec2;

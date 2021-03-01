@@ -185,13 +185,13 @@ else
         //start the timer
         aTimer.Enabled = true;
 
-        //Get todays stats from the AllWorkerStats table
+        //get todays stats from the AllWorkerStats table
         workerStats = await WorkerStatsService.GetStatsAsync(currentPage);
         workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
 
-        //Get unique usernames from list to populate form with
+        //get unique usernames from workerStats list that was just returned to populate the form with
         uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
-        //Get unique worker types from list to populate form with
+        //get unique worker types from workerStats list that was just returned to populate the form with
         uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
     }
 

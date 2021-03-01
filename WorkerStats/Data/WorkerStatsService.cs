@@ -33,7 +33,7 @@ namespace WorkerStats.Data
         //'No_Nos_QR', 'CQC: 2K', 'CQC: BK', 'CQC: CD', 'CQC: CS', 'CQC: INS', 'CQC: LG', 'Super_Deduper', 'DUPE_LISTED', 'SSN_DOB', 'ADNC', 'Vidant System Generated', 
         //'JohnDoe', 'Interest_Rate_Notice_Issues', 'AURORA_DECEASED_CLOSED', 'Aurora_Experian_Deceased', 'CRC_Daily', 'NAPCP', 'Need_More_Pmts', 'CT_Phone_Valid', 'No_Ntc_Send', 'LGH_Worker')";
 
-        private static string arMonitoredStats = @"('P6H', 'FINDEMP', '2KD', 'SHARED', 'DNNO', 'SSN_DOB', 'EMLV', 'DWL', 'TPO', 'BANKO_MULTI_TYPE', 'MERCY_MAIL', 'CFR', 'NCD', 'PBS', 'PBT',
+        private static string arMonitoredStats = @"('P6H', 'FINDEMP', 'SHARED', 'DNNO', 'SSN_DOB', 'EMLV', 'DWL', 'TPO', 'BANKO_MULTI_TYPE', 'MERCY_MAIL', 'CFR', 'NCD', 'PBS', 'PBT',
     'AURORA_EXPERIAN_DECEASED', 'AURORA_DECEASED_CLOSED', 'DUPE_LISTED', 'PNC', 'MINOR', 'SUPER_DEDUPER', 'SPANISH_CALL_MONITOR', 'NEED_MORE_PMTS', 'NEED_MORE_PMTS_Y_WINDOW', 'NO_NOS_QR',
     'DC_SCRUB')";
 

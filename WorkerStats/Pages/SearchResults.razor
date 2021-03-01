@@ -18,22 +18,32 @@
 else
 {
     <div class="container-fluid">
-        <form>
-            <input type="button" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
-        </form>
-        <h3>Search Results For:</h3>
         <div class="row">
-            <div class="col-md-3">
-                <h5>Start Date: @convertedStartDateTime</h5>
+            <div class="col-md-6">
+                <form>
+                    <input type="button" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
+                </form>
             </div>
-            <div class="col-md-3">
-                <h5>End Date: @convertedEndDateTime</h5>
-            </div>
-            <div class="col-md-3">
-                <h5>Employee: @uniqueUserToSearch</h5>
-            </div>
-            <div class="col-md-3">
-                <h5>Type: @inWorker</h5>
+            <div class="col-md-6">
+                <h3>Search Results For:</h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>Start Date: <br />
+                        @convertedStartDateTime</h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>End Date: <br />
+                        @convertedEndDateTime</h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Employee: <br />
+                        @uniqueUserToSearch</h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Type: <br />
+                        @inWorker</h5>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -77,18 +87,18 @@ else
         </div>
     </div>
 }
-    @code {
-        //Parameters for SearchResults razor component
-        [Parameter]
-        public string startDateTime { get; set; }
-        [Parameter]
-        public string endDateTime { get; set; }
-        [Parameter]
-        public string uniqueUserToSearch { get; set; }
-        [Parameter]
-        public string inWorker { get; set; }
+@code {
+    //Parameters for SearchResults razor component
+    [Parameter]
+    public string startDateTime { get; set; }
+    [Parameter]
+    public string endDateTime { get; set; }
+    [Parameter]
+    public string uniqueUserToSearch { get; set; }
+    [Parameter]
+    public string inWorker { get; set; }
 
-public long totalCount;
+    public long totalCount;
     public long remainingTotalCount;
     public long totalTimeSpent;
     public string convertedStartDateTime;
@@ -101,4 +111,4 @@ public long totalCount;
         convertedEndDateTime = DateTime.ParseExact(endDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
         workerStats = await WorkerStatsService.SearchResultsAsync(startDateTime, endDateTime, uniqueUserToSearch, inWorker);
     }
-    }
+}
