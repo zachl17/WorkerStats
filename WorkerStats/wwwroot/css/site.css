@@ -94,6 +94,7 @@ img {
     .form label {
         margin-top: 5px;
         margin-left: 10px;
+        color: #fff;
     }
 .form-control {
     color: #000000;
@@ -116,10 +117,11 @@ Style the input fields
     border: 1px solid #ddd;
 }
 
-    .form-inline label {
-        margin-left: 5px;
-        padding: 5px;
-    }
+.form-inline label {
+    margin-left: 5px;
+    padding: 5px;
+    color: #fff;
+}
 
 /* Style the submit button */
 .btn {
