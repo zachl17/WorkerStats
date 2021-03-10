@@ -1,8 +1,12 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Data.Odbc;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WorkerStats.Data
@@ -10,32 +14,35 @@ namespace WorkerStats.Data
     public class WorkerStatsService
     {
         //used for MS SQL connection
-        SqlConnection cnSQL;
-        SqlCommand selectCMD;
-        SqlDataReader drSQL;
+        private SqlConnection cnSQL;
+
+        private SqlCommand selectCMD;
+        private SqlDataReader drSQL;
         public string connectionStringSQL;
         private static string allWorkersTable = "[dbo].[AllWorkers.Workers]";
         private static string allWorkerStatsTable = "[dbo].[AllWorkers.WorkerStats]";
 
         //used for queries
         public static string inWorker;
+
         public static string uniqueUserToSearch;
         public static string startDate;
         public static string endDate;
 
         //lists to store sql results
-        List<WorkerStats> workerStatsList = new List<WorkerStats>();
-        List<WorkerStats> remainingWorkerStatsTotals = new List<WorkerStats>();
+        private List<WorkerStats> workerStatsList = new List<WorkerStats>();
+
+        private List<WorkerStats> remainingWorkerStatsTotals = new List<WorkerStats>();
 
         //Monitored stats for each department to used in the in statement
-        //    private static string arMonitoredStats = @"('DCSCRUB','P6H', 'DWL', 'EMLV', 'FINDEMP', 'NAW', 'M', 'P', 'SHARED', '2. Kids', '2. Kids Help', 'MERCY_MAIL', 'DNNO', 
-        //'Scrub Returned Positive Result', 'Banko Multi Type', 'NCD', 'PBT', 'PBS', 'PNC_Worker','7','CH7MEETING', 'CH7NOTICES', 'CH13MEETING', 'CH13NOTICES', 'CFR', 'TPO', 'Minor_Worker', 
-        //'No_Nos_QR', 'CQC: 2K', 'CQC: BK', 'CQC: CD', 'CQC: CS', 'CQC: INS', 'CQC: LG', 'Super_Deduper', 'DUPE_LISTED', 'SSN_DOB', 'ADNC', 'Vidant System Generated', 
+        //    private static string arMonitoredStats = @"('DCSCRUB','P6H', 'DWL', 'EMLV', 'FINDEMP', 'NAW', 'M', 'P', 'SHARED', '2. Kids', '2. Kids Help', 'MERCY_MAIL', 'DNNO',
+        //'Scrub Returned Positive Result', 'Banko Multi Type', 'NCD', 'PBT', 'PBS', 'PNC_Worker','7','CH7MEETING', 'CH7NOTICES', 'CH13MEETING', 'CH13NOTICES', 'CFR', 'TPO', 'Minor_Worker',
+        //'No_Nos_QR', 'CQC: 2K', 'CQC: BK', 'CQC: CD', 'CQC: CS', 'CQC: INS', 'CQC: LG', 'Super_Deduper', 'DUPE_LISTED', 'SSN_DOB', 'ADNC', 'Vidant System Generated',
         //'JohnDoe', 'Interest_Rate_Notice_Issues', 'AURORA_DECEASED_CLOSED', 'Aurora_Experian_Deceased', 'CRC_Daily', 'NAPCP', 'Need_More_Pmts', 'CT_Phone_Valid', 'No_Ntc_Send', 'LGH_Worker')";
 
         private static string arMonitoredStats = @"('P6H', 'FINDEMP', 'SHARED', 'DNNO', 'SSN_DOB', 'EMLV', 'DWL', 'TPO', 'BANKO_MULTI_TYPE', 'MERCY_MAIL', 'CFR', 'NCD', 'PBS', 'PBT',
     'AURORA_EXPERIAN_DECEASED', 'AURORA_DECEASED_CLOSED', 'DUPE_LISTED', 'PNC', 'MINOR', 'SUPER_DEDUPER', 'SPANISH_CALL_MONITOR', 'NEED_MORE_PMTS', 'NEED_MORE_PMTS_Y_WINDOW', 'NO_NOS_QR',
-    'DC_SCRUB')";
+    'DC_SCRUB', 'CR_DAILY', 'JOHN_DOE', 'INTEREST_RATE_NOTICE_ISSUES', 'MOVE_ACCOUNTS', 'CT_PHONE_VALID')";
 
         private static string legalMonitoredStats = @"('2KD', 'EMLV_LEGAL')";
 
@@ -43,7 +50,8 @@ namespace WorkerStats.Data
             "[dbo].[AllWorkers.DNNO_Data]", "[dbo].[AllWorkers.AuroraDeceased_ClosedData]", "[dbo].[AllWorkers.CFRemoval_Data]", "[dbo].[AllWorkers.DeceasedNCD]", "[dbo].[AllWorkers.MinorWorker_BaseDebtor]",
             "[dbo].[AllWorkers.DeceasedPBS]", "[dbo].[AllWorkers.DeceasedPBT]", "[dbo].[AllWorkers.BankoMultiData]", "[dbo].[AllWorkers.DupeListedCheck_Data]", "[dbo].[AllWorkers.DWL_Data]",
             "[dbo].[AllWorkers.NeedMorePmts_Data]", "[dbo].[AllWorkers.NeedMorePmts_Y_Setup]", "[dbo].[AllWorkers.PhoneDedupe_Phone]", "[dbo].[TPO_Phone_Own.Worker]", "[dbo].[AllWorkers.NoNos_Data]",
-            "[dbo].[AllWorkers.DCScrub_Data]"};
+            "[dbo].[AllWorkers.DCScrub_Data]", "[dbo].[AllWorkers.CRCDaily_Data]", "[dbo].[AllWorkers.JohnDoe_Data]", "[dbo].[AllWorkers.InterestRateNoticeIssues_Data]", "[dbo].[AllWorkers.MoveAccounts_Data]",
+            "[dbo].[AllWorkers.CTPhoneValid_Data]"};
 
         private static List<string> legalTables = new List<string> { "[dbo].[AllWorkers.2KDFacebookWorker]", "[dbo].[AllWorkers.EMLV_LegalRevamp]" };
 
@@ -58,9 +66,11 @@ namespace WorkerStats.Data
                 case "AccountReviewPage":
                     monitoredStats = arMonitoredStats;
                     break;
+
                 case "LegalPage":
                     monitoredStats = legalMonitoredStats;
                     break;
+
                 default:
                     break;
             }
@@ -74,7 +84,7 @@ namespace WorkerStats.Data
                     FROM(
                     SELECT *
                     FROM {allWorkerStatsTable}
-                    WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -500
+                    WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -1
                     AND InWorker IN {monitoredStats}
                     ) AS a GROUP BY Username, InWorker
                     ORDER BY InWorker, COUNT(*) DESC";
@@ -107,9 +117,11 @@ namespace WorkerStats.Data
                 case "AccountReviewPage":
                     tablesToQuery = arTables;
                     break;
+
                 case "LegalPage":
                     tablesToQuery = legalTables;
                     break;
+
                 default:
                     break;
             }
@@ -122,7 +134,7 @@ namespace WorkerStats.Data
                 cnSQL.Open();
                 foreach (var table in tablesToQuery)
                 {
-                    string selectSQL = @$"SELECT InWorker AS 'InWorker', COUNT(*) AS 'Count' FROM {table} 
+                    string selectSQL = @$"SELECT InWorker AS 'InWorker', COUNT(*) AS 'Count' FROM {table}
                             INNER JOIN {allWorkersTable}
                             ON {table}.WorkerID = {allWorkersTable}.WorkerID
                             GROUP BY InWorker
@@ -159,7 +171,7 @@ namespace WorkerStats.Data
                                 FROM(
                                 SELECT *
                                 FROM {allWorkerStatsTable}
-                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() 
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -1
                                 AND Username = '{user}'
                                 AND InWorker IN ('{inWorker}')
                                 ) AS a GROUP BY Username, InWorker
@@ -172,8 +184,19 @@ namespace WorkerStats.Data
                                 FROM(
                                 SELECT *
                                 FROM {allWorkerStatsTable}
-                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() 
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -1
                                 AND Username = '{user}'
+                                ) AS a GROUP BY Username, InWorker
+                                ORDER BY InWorker, COUNT(*) DESC";
+            }
+            //if startdate & endate is today, user is null, worker is null
+            else if (startDate == DateTime.Today.ToString("yyyy-MM-dd") && endDate == DateTime.Today.ToString("yyyy-MM-dd") && String.IsNullOrEmpty(user) && String.IsNullOrEmpty(inWorker))
+            {
+                searchSelectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker, SUM(SecondsElapsed) AS 'TimeSpent'
+                                FROM(
+                                SELECT *
+                                FROM {allWorkerStatsTable}
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -1
                                 ) AS a GROUP BY Username, InWorker
                                 ORDER BY InWorker, COUNT(*) DESC";
             }
@@ -184,7 +207,7 @@ namespace WorkerStats.Data
                                 FROM(
                                 SELECT *
                                 FROM {allWorkerStatsTable}
-                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() 
+                                WHERE CONVERT(DATE, EndDateTime) >= GETDATE() -1
                                  AND InWorker IN ('{inWorker}')
                                 ) AS a GROUP BY Username, InWorker
                                 ORDER BY InWorker, COUNT(*) DESC";
@@ -292,6 +315,60 @@ namespace WorkerStats.Data
             return Task.FromResult(workerStatsList);
         }
 
+        public void WriteExcelFile(List<WorkerStats> workerStats, string start, string end, string user, string worker)
+        {
+            // Lets converts our object data to Datatable for a simplified logic.
+            // Datatable is most easy way to deal with complex datatypes for easy reading and formatting.
+            DataTable table = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(workerStats), (typeof(DataTable)));
+
+            string timeStamp = DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss");
+
+            using (SpreadsheetDocument document = SpreadsheetDocument.Create($@"G:\\Instructions\\Visual_Studio\\ZachL\\TestOutput\\{timeStamp}_TestData.xlsx", SpreadsheetDocumentType.Workbook))
+            {
+                WorkbookPart workbookPart = document.AddWorkbookPart();
+                workbookPart.Workbook = new Workbook();
+
+                WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                var sheetData = new SheetData();
+                worksheetPart.Worksheet = new Worksheet(sheetData);
+
+                Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+                Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = $"{user}_Export"};
+
+                sheets.Append(sheet);
+
+                Row headerRow = new Row();
+
+                List<String> columns = new List<string>();
+                foreach (System.Data.DataColumn column in table.Columns)
+                {
+                    columns.Add(column.ColumnName);
+
+                    Cell cell = new Cell();
+                    cell.DataType = CellValues.String;
+                    cell.CellValue = new CellValue(column.ColumnName);
+                    headerRow.AppendChild(cell);
+                }
+
+                sheetData.AppendChild(headerRow);
+
+                foreach (DataRow dsrow in table.Rows)
+                {
+                    Row newRow = new Row();
+                    foreach (String col in columns)
+                    {
+                        Cell cell = new Cell();
+                        cell.DataType = CellValues.String;
+                        cell.CellValue = new CellValue(dsrow[col].ToString());
+                        newRow.AppendChild(cell);
+                    }
+
+                    sheetData.AppendChild(newRow);
+                }
+
+                workbookPart.Workbook.Save();
+            }
+        }
 
         //converts SecondsElapsed field from AllWorkerStats table into something more readable (EXAMPLE: 1 hours 13 minutes 48 seconds)
         public string convertSeconds(string secondsElapsed)

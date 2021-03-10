@@ -22,6 +22,7 @@ else
             <div class="col-md-6">
                 <form>
                     <input type="button" class="btn btn-default" value="Back To Worker Stats" onclick="history.back()" />
+                    <input type="button" class="btn btn-default" value="Export Data" @onclick="(() => ExportData(workerStats))" />
                 </form>
             </div>
             <div class="col-md-6">
@@ -103,12 +104,17 @@ else
     public long totalTimeSpent;
     public string convertedStartDateTime;
     public string convertedEndDateTime;
-    private List<WorkerStats> workerStats { get; set; }
+    public List<WorkerStats> workerStats { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         convertedStartDateTime = DateTime.ParseExact(startDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
         convertedEndDateTime = DateTime.ParseExact(endDateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString("MM-dd-yyyy");
         workerStats = await WorkerStatsService.SearchResultsAsync(startDateTime, endDateTime, uniqueUserToSearch, inWorker);
+    }
+
+    protected void ExportData(List<WorkerStats> stats)
+    {
+        WorkerStatsService.WriteExcelFile(stats, startDateTime, endDateTime, uniqueUserToSearch, inWorker);
     }
 }

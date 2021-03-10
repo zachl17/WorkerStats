@@ -92,7 +92,7 @@ else
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6" id="searchForm">
+            <!--<div class="col-md-6" id="searchForm">
                 <h3>Search Worker Stats</h3>
                 <form class="form" role="form">
                     <div class="form-group">
@@ -104,31 +104,37 @@ else
                         <input type="date" class="form-control" @bind="@endDateString">
                     </div>
                     <label for="beginDate">Name To Filter By:</label>
-                    <select class="form-control" @bind="uniqueUserToSearch">
+                    <select class="form-control" @bind="uniqueUserToSearch">-->
                         @*Show empty value on form*@
-                        <option value=""></option>
+                        <!--<option value=""></option>-->
                         @*Only show unique users*@
-                        @foreach (var uniqueUser in uniqueUsers)
+                        <!--@foreach (var uniqueUser in uniqueUsers)
                         {
                             <option value="@uniqueUser">@uniqueUser</option>
                         }
                     </select>
                     <label for="beginDate">Type To Filter By:</label>
-                    <select class="form-control" @bind="inWorker">
+                    <select class="form-control" @bind="inWorker">-->
                         @*Show empty value on form*@
-                        <option value=""></option>
+                        <!--<option value=""></option>-->
                         @*Only show unique workers*@
-                        @foreach (var uniqueWorker in uniqueWorkers)
+                        <!--@foreach (var uniqueWorker in uniqueWorkers)
                         {
                             <option value="@uniqueWorker">@uniqueWorker</option>
                         }
                     </select>
                     <button type="button" class="btn btn-default" @onclick="SearchStats">Search</button>
                 </form>
-            </div>
-            <div class="col-md-6">
+            </div>-->
+            <div class="col-md-12">
                 <h3>AR Department Remaining Totals</h3>
                 <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Total Remaining</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         @foreach (var workerStatsRemainingTotal in workerStatsRemainingTotals)
                         {
@@ -190,7 +196,7 @@ else
         workerStatsRemainingTotals = await WorkerStatsService.GetRemainingTotalsAsync(currentPage);
 
         //get unique usernames from workerStats list that was just returned to populate the form with
-        uniqueUsers = workerStats.Select(uName => uName.Username).Distinct().ToList();
+        uniqueUsers = workerStats.Select(uName => uName.Username.ToUpper()).Distinct().ToList();
         //get unique worker types from workerStats list that was just returned to populate the form with
         uniqueWorkers = workerStats.Select(worker => worker.InWorker).Distinct().ToList();
     }

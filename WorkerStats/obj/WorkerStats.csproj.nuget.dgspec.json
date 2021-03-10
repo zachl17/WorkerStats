@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj": {}
+    "G:\\Instructions\\Visual_Studio\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj": {}
   },
   "projects": {
-    "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj": {
+    "G:\\Instructions\\Visual_Studio\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
+        "projectUniqueName": "G:\\Instructions\\Visual_Studio\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
         "projectName": "WorkerStats",
-        "projectPath": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
+        "projectPath": "G:\\Instructions\\Visual_Studio\\ZachL\\WorkerStats\\WorkerStats\\WorkerStats.csproj",
         "packagesPath": "C:\\Users\\zacharyl\\.nuget\\packages\\",
-        "outputPath": "G:\\Instructions\\Project Analyst\\ZAL\\WorkerStats\\WorkerStats\\obj\\",
+        "outputPath": "G:\\Instructions\\Visual_Studio\\ZachL\\WorkerStats\\WorkerStats\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zacharyl\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,22 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "DocumentFormat.OpenXml": {
+              "target": "Package",
+              "version": "[2.12.3, )"
+            },
+            "EPPlus": {
+              "target": "Package",
+              "version": "[5.5.5, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.23, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
             "System.Data.Odbc": {
               "target": "Package",
               "version": "[5.0.0, )"
