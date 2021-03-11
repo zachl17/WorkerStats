@@ -78,7 +78,6 @@ namespace WorkerStats.Data
             //clear list on component being initialized
             workerStatsList.Clear();
             connectionStringSQL = new ConnectToDatabase().GetConnectionSQL();
-            //connectionStringSQL = new ConnectToDatabase().GetConnectionMySQL();
 
             string selectSQL = @$"SELECT Username, ROUND(AVG(SecondsElapsed),2) AS 'AVG', COUNT(*) AS 'Count', InWorker AS 'InWorker', SUM(SecondsElapsed) AS 'TimeSpent'
                     FROM(
@@ -103,6 +102,9 @@ namespace WorkerStats.Data
                     }
                 }
             }
+            //dispose sql connection
+            ConnectToDatabase.Dispose(cnSQL);
+            //return the list of workerstats
             return Task.FromResult(workerStatsList);
         }
 
@@ -152,6 +154,9 @@ namespace WorkerStats.Data
                     }
                 }
             }
+            //dispose sql connection
+            ConnectToDatabase.Dispose(cnSQL);
+            //return the list of workerstats
             return Task.FromResult(remainingWorkerStatsTotals);
         }
 
@@ -312,13 +317,15 @@ namespace WorkerStats.Data
                     }
                 }
             }
+            //dispose sql connection
+            ConnectToDatabase.Dispose(cnSQL);
+            //return the list of workerstats
             return Task.FromResult(workerStatsList);
         }
 
         public void WriteExcelFile(List<WorkerStats> workerStats, string start, string end, string user, string worker)
         {
-            // Lets converts our object data to Datatable for a simplified logic.
-            // Datatable is most easy way to deal with complex datatypes for easy reading and formatting.
+            //converts our object data to Datatable for a simplified logic
             DataTable table = (DataTable)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(workerStats), (typeof(DataTable)));
 
             string timeStamp = DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss");

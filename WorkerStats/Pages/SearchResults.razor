@@ -1,4 +1,4 @@
-﻿@*This page is used if the worker is specified in the search and the user is not*@
+﻿@*This page is used if the worker and user are not specified in the search*@
 @page "/searchresults/{startDateTime}/{endDateTime}"
 @*This page is used if the worker is specified in the search and the user is not*@
 @page "/searchresults/worker/{startDateTime}/{endDateTime}/{inWorker}"
@@ -63,7 +63,7 @@ else
                         @foreach (var workerStat in workerStats)
                         {
                             <tr>
-                                <td>@workerStat.Username</td>
+                                <td>@workerStat.Username.ToUpper()</td>
                                 <td>@workerStat.AverageSecondsElapsed</td>
                                 <td>@workerStat.Count</td>
                                 <td>@workerStat.InWorker</td>
